@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <stack>
 
 #include <algorithm>
 
@@ -139,6 +140,85 @@ void basic_heapSort(vector<int> &arr) {
 // 计数排序
 #pragma endregion BASIC_SORT
 
+#pragma region BITREE_OPERATION
+// 二叉树
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+};
+
+// 非递归的先序遍历
+vector<int> PreOrder(TreeNode* root) {
+    if (root == NULL) return vector<int>();
+    stack<TreeNode*> s;
+    vector<int> res;
+    s.push(root);
+    res.push_back(root->val);
+    TreeNode* cur = root->left;
+    while (!s.empty() || cur != NULL) {
+        while (cur != NULL)//遍历左子节点直到叶子节点  
+        {
+            s.push(cur);
+            res.push_back(cur->val);
+            cur = cur->left;
+        }
+        cur = s.top()->right;//将当前节点设为最近右子节点  
+        s.pop();
+    }
+    return res;
+}
+
+// 非递归的中序遍历
+vector<int> InOrder(TreeNode* root) {
+    if (root == NULL) return vector<int>();
+    stack<TreeNode*> s;
+    vector<int> res;
+    s.push(root);
+    TreeNode* cur = root->left;
+    while (!s.empty() || cur != NULL) {
+        while (cur != NULL) {
+            s.push(cur);
+            cur = cur->left;
+        }
+        cur = s.top()->right;
+        res.push_back(s.top()->val);//在弹栈时访问根节点  
+        s.pop();
+    }
+    return res;
+}
+
+// 非递归的后序遍历
+vector<int> PostOrder(TreeNode* root) {
+    if (root == NULL) return vector<int>();
+    stack<TreeNode*> s;
+    stack<bool> isFirst;//存储是否是第一次被访问  
+    vector<int> res;
+    s.push(root);
+    isFirst.push(true);
+    TreeNode* cur = root->left;
+    while (!s.empty() || cur != NULL) {
+        while (cur != NULL) {
+            s.push(cur);
+            isFirst.push(true);
+            cur = cur->left;
+        }
+        if (isFirst.top())//如果第一次被访问更新标记，更新当前节点为右子树  
+        {
+            isFirst.pop();
+            isFirst.push(false);
+            cur = s.top()->right;
+        } else//如果已经被访问过一次，则返回值且弹出  
+        {
+            res.push_back(s.top()->val);
+            isFirst.pop();
+            s.pop();
+        }
+    }
+    return res;
+}
+#pragma endregion BITREE_OPERATION
+
 #pragma region MEITUAN_TEST
 // 美团练习
 // 分硬币
@@ -207,6 +287,7 @@ void meituan_test_maxArea() {
 
 #pragma region MEITUAN_REAL
 // 美团白板编程
+// 找到升序序列划分的位置
 void meituan_online_findPatitionIndex() {
     int len = 9;
     int arr[] = { 3, 4, 5, 6, 7, 8, 9, 1, 2 };
@@ -222,6 +303,93 @@ void meituan_online_findPatitionIndex() {
     }
     int result = (arr[mid] < arr[0]) ? (len - mid) : (len - mid - 1);
     cout << result;
+}
+
+// 美团笔试
+// 找到重要城市配对的最小权重
+int costX(vector<int> src, vector<vector<int>> minCost) {
+    if (src.size() == 2) {
+        return minCost[src[0]][src[1]];
+    }
+    for (auto i = 0; i < src.size(); ++i) {
+        for (auto j = 0; j < src.size(); ++j) {
+            if (src[i] == src[j]) {
+                continue;
+            }
+            vector<int> cop;
+            for (auto k = 0; k < src.size(); ++k) {
+                if (src[i] == src[k] || src[j] == src[k]) {
+                    continue;
+                }
+                cop.push_back(src[k]);
+            }
+
+            return costX({ src[i],src[j] }, minCost) + costX(cop, minCost);
+        }
+    }
+}
+
+void meituan_real_minWeightedAssign() {
+    const int MaxValue = 100 * 10001;
+    int n, kNum;
+    cin >> n;
+    vector<vector<int>> matrix(n, vector<int>(n, -1));
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            cin >> matrix[i][j];
+            if (matrix[i][j] < 0) {
+                matrix[i][j] = MaxValue;
+            }
+        }
+    }
+    cin >> kNum;
+    vector<int> vital(kNum * 2);
+    vector<bool> selected(kNum * 2, false);
+    for (int i = 0; i < 2 * kNum; ++i) {
+        cin >> vital[i];
+        --vital[i];
+    }
+    int cost = 0;
+    vector<vector<int>> minCost(n, vector<int>(n, 0));
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            minCost[i][j] = matrix[i][j];
+        }
+    }
+    for (int k = 0; k < n; ++k) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (minCost[i][j] > minCost[i][k] + minCost[k][j]) {
+                    minCost[i][j] = minCost[i][k] + minCost[k][j];
+                }
+            }
+        }
+    }
+
+    //for (int k = 0; k < kNum; ++k) {
+    //    int minC = MaxValue;
+    //    int u = -1, v = -1;
+    //    for (int i = 0; i < 2 * kNum - 1; ++i) {
+    //        if (selected[i]) {
+    //            continue;
+    //        }
+    //        for (int j = i + 1; j < 2 * kNum; ++j) {
+    //            if (selected[j]) {
+    //                continue;
+    //            }
+    //            if (minCost[i][j] < minC) {
+    //                minC = minCost[i][j];
+    //                u = i;
+    //                v = j;
+    //            }
+    //        }
+    //    }
+    //    selected[u] = true;
+    //    selected[v] = true;
+    //    cost += minC;
+    //}
+
+    cout << costX(vital, minCost);
 }
 #pragma endregion MEITUAN_REAL
 
@@ -307,3 +475,211 @@ void wangyi_test_cross01Series() {
 void wangyi_test_operationSeries() {}
 #pragma endregion WANGYI_TEST
 
+#pragma endregion WANGYI_REAL
+// 网易笔试
+// 迷路的牛牛
+void wangyi_real_lostNiuniu() {
+    // NESW
+    int n;
+    cin >> n;
+    //vector<int> status(n, 0);
+    char choice;
+    int status = 0;
+    for (int i = 0; i < n; ++i) {
+        cin >> choice;
+        if (choice == 'R') {
+            ++status;
+            status = (status + 4) % 4;
+        } else if (choice == 'L') {
+            --status;
+            status = (status + 4) % 4;
+        }
+    }
+    switch (status) {
+    case 0:cout << "N"; break;
+    case 1:cout << "E"; break;
+    case 2:cout << "S"; break;
+    case 3:cout << "W"; break;
+    default:
+        break;
+    }
+}
+
+// 被3整除的数字序列
+int wangyi_real_getNumberCountDividedBy3() {
+    int l, r;
+    cin >> l >> r;
+
+    auto getSum = [](int n)->int {
+        int m = n % 3;
+        int t = n / 3;
+        return (t * 2 + m / 2);
+    };
+
+    cout << getSum(r) - getSum(l - 1) << endl;
+
+    return 0;
+}
+#pragma endregion WANGYI_REAL
+
+#pragma region DIDI_REAL
+// 滴滴白板编程
+void didi_online_greater() {
+    vector<int> arr = { 8, 4, 8, 5, 3, 3, 1 };
+
+
+    int i = arr.size() - 1;
+    for (; (i > 0) && (arr[i] <= arr[i - 1]); --i) {}
+    --i;
+    int insertValue = arr[i];
+    int j = i + 1;
+    for (; j < arr.size(); ++j) {
+        if (arr[j] < insertValue) {
+            arr[i] = arr[j - 1];
+            arr[j - 1] = insertValue;
+            break;
+        }
+    }
+    arr[j - 1] = insertValue;
+    int k = 0;
+    auto it = arr.begin();
+    for (; it != arr.end(); ++it, ++k) {
+        if (k == i) { break; }
+    }
+
+
+    sort(it + 1, arr.end());
+
+    for (auto i = arr.begin(); i != arr.end(); ++i) {
+        cout << *i;
+    }
+}
+#pragma endregion DIDI_REAL
+
+#pragma region ALIBABA_REAL
+// 求最大公约数
+int commonDivisor(int m, int n) {
+    int i;
+    for (i = m; i >= 1; i--) {
+        if (m % i == 0 && n % i == 0) { break; }
+    }
+    return i;
+}
+
+// HR姐姐能看到的人数
+void alibaba_online_shineStar() {
+    int n;
+    cin >> n;
+
+    long r = 3;
+    for (int i = 2; i <= n; ++i) {
+        r += 2;
+        for (int j = 2; j < i; ++j) {
+            if (commonDivisor(j, i) == 1) {
+                r += 2;
+            }
+        }
+    }
+    cout << r;
+}
+#pragma endregion ALIBABA_REAL
+
+#pragma region ZHAOHANG_REAL
+// 招行笔试
+// 可以首尾连接成字符串的最大子串
+void zhaohang_real_stringConcat() {
+    string str;
+    cin >> str;
+    int len = str.length();
+    int subLen = 0;
+
+    for (int i = 0; i < len - 1; ++i) {
+        ostringstream oss;
+        if (len % (i + 1) != 0) {
+            continue;
+        }
+        string sub = str.substr(0, i + 1);
+        for (int j = 0; j < len / (i + 1); ++j) {
+            oss << sub;
+        }
+        if (str.compare(oss.str()) == 0) {
+            subLen = i + 1;
+        }
+    }
+    if (subLen > 0) {
+        cout << str.substr(0, subLen);
+    } else {
+        cout << "false";
+    }
+}
+
+// 输入能够两两匹配的n对括号（未ac）
+void zhaohang_real_stringMatch() {
+    int n;
+    cin >> n;
+
+    string s;
+    int endIndex = n - 1;
+    int startIndex = endIndex + 1;
+    for (auto i = 0; i <= endIndex; ++i) {
+        s += '(';
+    }
+    for (auto i = startIndex; i < 2 * n; ++i) {
+        s += ')';
+    }
+    cout << s;
+
+    bool found = false;
+
+    do {
+        s[endIndex] = ')';
+        s[startIndex] = '(';
+
+        //cout << startIndex << " " << endIndex;
+        cout << "," << s;
+        found = false;
+        if (startIndex <= 2) { break; }
+        for (auto i = s.length() - 3; i > 0; --i) {
+            if (s[i] == '(') {
+                endIndex = i;
+                startIndex = i + 1;
+                found = true;
+                break;
+            }
+        }
+    } while (found && startIndex > 1);
+
+}
+
+// 大整数分解，使得乘积最大
+void zhaohang_real_integerPart() {
+    int n;
+    cin >> n;
+
+    int result = 0;
+    switch (n) {
+    case 1: result = 0; break;
+    case 2: result = 1; break;
+    case 3: result = 2; break;
+    default:
+        break;
+    }
+    int a, b;
+    if (n >= 4) {
+        if (n % 2) {
+            a = ((n - 3) % 6) / 2;
+            b = ((n - 3) / 6) * 2 + 1;
+            result = pow(2, a) * pow(3, b);
+        } else {
+            a = (n % 6) / 2;
+            b = (n / 6) * 2;
+            result = pow(2, a) * pow(3, b);
+        }
+    }
+    cout << result;
+}
+#pragma endregion ZHAOHANG_REAL
+
+#pragma region TENCENT_REAL
+void tencent_real_() {}
+#pragma endregion TENCENT_REAL
