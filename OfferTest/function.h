@@ -236,8 +236,41 @@ void replaceSpace(char *str, int length) {
     }
     str = (char *)realloc(str, len * sizeof(char));
     strcpy(str, oss.str().c_str());
-    int x;
-    cin >> x;
+}
+
+// 用两个栈实现队列
+void stackToQueue() {
+    stack<int> stack1;
+    stack<int> stack2;
+
+    auto pop = [&]()->int {
+        int x = stack1.top();
+        stack1.pop();
+        return x;
+    };
+    auto push = [&](int node) {
+        int count = stack1.size();
+
+        for (int i = 0; i < count; ++i) {
+            stack2.push(stack1.top());
+            stack1.pop();
+        }
+        stack1.push(node);
+        for (int i = 0; i < count; ++i) {
+            stack1.push(stack2.top());
+            stack2.pop();
+        }
+    };
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; ++i) {
+        int x;
+        cin >> x;
+        push(x);
+    }
+    for (int i = 0; i < n; ++i) {
+        cout << pop() << " ";
+    }
 }
 #pragma endregion ONLINE_TEST
 
@@ -497,7 +530,7 @@ void wangyi_test_cross01Series() {
 void wangyi_test_operationSeries() {}
 #pragma endregion WANGYI_TEST
 
-#pragma endregion WANGYI_REAL
+#pragma region WANGYI_REAL
 // 网易笔试
 // 迷路的牛牛
 void wangyi_real_lostNiuniu() {
@@ -704,4 +737,5 @@ void zhaohang_real_integerPart() {
 
 #pragma region TENCENT_REAL
 void tencent_real_() {}
+
 #pragma endregion TENCENT_REAL
