@@ -219,6 +219,28 @@ vector<int> PostOrder(TreeNode* root) {
 }
 #pragma endregion BITREE_OPERATION
 
+#pragma region ONLINE_TEST
+// 刷题
+// 替换空格
+void replaceSpace(char *str, int length) {
+    string s(str);
+    ostringstream oss;
+    int len = length;
+    for (auto i = s.begin(); i != s.end(); ++i) {
+        if (isblank(*i)) {
+            oss << "%20";
+            len += 2;
+        } else {
+            oss << *i;
+        }
+    }
+    str = (char *)realloc(str, len * sizeof(char));
+    strcpy(str, oss.str().c_str());
+    int x;
+    cin >> x;
+}
+#pragma endregion ONLINE_TEST
+
 #pragma region MEITUAN_TEST
 // 美团练习
 // 分硬币
