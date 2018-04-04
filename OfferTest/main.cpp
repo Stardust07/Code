@@ -16,7 +16,7 @@ int main() {
     //basic_selectSort();
     //basic_insertSort(arr);
     //basic_shellSort(arr);
-    //basic_quickSort(arr);
+    basic_quickSort(arr);
     //basic_mergeSort(arr);
     //basic_heapSort(arr);
 
