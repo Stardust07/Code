@@ -736,6 +736,79 @@ void zhaohang_real_integerPart() {
 #pragma endregion ZHAOHANG_REAL
 
 #pragma region TENCENT_REAL
-void tencent_real_() {}
+// 翻转数列
+void tencent_real_reverseArray() {
+    long long n, m;
+    cin >> n >> m;
 
+    long long mid = n / (2 * m);
+    long long mid_value = m * m;
+    long long result = mid * mid_value;
+    cout << result;
+}
+
+// 小Q的歌单
+void tencent_real_songList() {
+    const int MOD = 1000000007;
+    int n;
+    cin >> n;
+
+    int l1, l2, n1, n2;
+    cin >> l1 >> n1 >> l2 >> n2;
+
+    vector<int> len(n1 + n2);
+    for (int i = 0; i < n1; ++i) {
+        len[i] = l1;
+    }
+    for (int i = n1; i < n1 + n2; ++i) {
+        len[i] = l2;
+    }
+    vector<vector<int>> results(n1 + n2, vector<int>(n + 1));
+    for (int i = 0; i < n1 + n2; ++i) {
+        results[i][0] = 1;
+    }
+    results[0][len[0]] = 1;
+
+    for (int i = 1; i < n1 + n2; ++i) {
+        for (int j = 1; j <= n; ++j) {
+            if (j - len[i] >= 0) {
+                results[i][j] += results[i - 1][j - len[i]];
+            }
+            results[i][j] += results[i - 1][j];
+            results[i][j] %= MOD;
+        }
+    }
+    cout << results[n1 + n2 - 1][n];
+}
+
+// 安排机器(未ac)
+void tencent_real_assignMachine() {
+    int n, m;
+    cin >> n >> m;
+    vector<int> machineTime(n);
+    vector<int> machineLevel(n);
+    vector<int> taskTime(m);
+    vector<int> taskLevel(m);
+    for (int i = 0; i < n; ++i) {
+        cin >> machineTime[i] >> machineLevel[i];
+    }
+    for (int i = 0; i < m; ++i) {
+        cin >> taskTime[i] >> taskLevel[i];
+    }
+    vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+    for (int i = 0; i < n; ++i) {
+
+        if (taskLevel[0] <= machineLevel[i] && taskTime[0] <= machineTime[i]) {
+            dp[1][i + 1] = 1;
+        }
+    }
+    //for (int i = 0; i < length; ++i) {
+    //    for (int j = 0; j < length; ++j) {
+
+    //    }
+    //}
+    //cout << dp[]
+}
+
+void tencent_real_assignMachine();
 #pragma endregion TENCENT_REAL

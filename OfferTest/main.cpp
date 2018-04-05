@@ -7,10 +7,10 @@
 #include "function.h"
 
 using namespace std;
+
 int main() {
     //vector<int> arr = { 7, 3, 2, 4, 5, 1, 6, 8, 6, 2 };
     vector<int> arr = { 16, 7, 3, 20, 17, 8 };
-
     // 基础排序算法
     //basic_bubbleSort(arr);
     //basic_selectSort();
@@ -21,7 +21,7 @@ int main() {
     //basic_heapSort(arr);
 
     //replaceSpace("Hello", 5);
-    stackToQueue();
+    //stackToQueue();
 
     // 美团
     //meituan_test_assignCoins();
@@ -46,6 +46,8 @@ int main() {
     //zhaohang_real_integerPart();
 
     // 腾讯
-
+    //tencent_real_reverseArray();
+    //tencent_real_songList();
+    tencent_real_assignMachine();
     return 0;
 }
