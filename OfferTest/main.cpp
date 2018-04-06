@@ -10,7 +10,8 @@ using namespace std;
 
 int main() {
     //vector<int> arr = { 7, 3, 2, 4, 5, 1, 6, 8, 6, 2 };
-    vector<int> arr = { 16, 7, 3, 20, 17, 8 };
+    //vector<int> arr = { 16, 7, 3, 20, 17, 8 };
+    vector<int> arr = { 5, 1, 1, 2, 2, 3, 4 };
     // 基础排序算法
     //basic_bubbleSort(arr);
     //basic_selectSort();
@@ -22,6 +23,10 @@ int main() {
 
     //replaceSpace("Hello", 5);
     //stackToQueue();
+    //cout << minNumberInRotateArray(arr);
+    //cout << fibonacci(4);
+    //cout << jumpFloorII(3);
+    cout << rectCover(3);
 
     // 美团
     //meituan_test_assignCoins();
@@ -48,6 +53,6 @@ int main() {
     // 腾讯
     //tencent_real_reverseArray();
     //tencent_real_songList();
-    tencent_real_assignMachine();
+    //tencent_real_assignMachine();
     return 0;
 }

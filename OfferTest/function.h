@@ -140,84 +140,84 @@ void basic_heapSort(vector<int> &arr) {
 // 计数排序
 #pragma endregion BASIC_SORT
 
-#pragma region BITREE_OPERATION
-// 二叉树
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-};
-
-// 非递归的先序遍历
-vector<int> PreOrder(TreeNode* root) {
-    if (root == NULL) return vector<int>();
-    stack<TreeNode*> s;
-    vector<int> res;
-    s.push(root);
-    res.push_back(root->val);
-    TreeNode* cur = root->left;
-    while (!s.empty() || cur != NULL) {
-        while (cur != NULL)//遍历左子节点直到叶子节点  
-        {
-            s.push(cur);
-            res.push_back(cur->val);
-            cur = cur->left;
-        }
-        cur = s.top()->right;//将当前节点设为最近右子节点  
-        s.pop();
-    }
-    return res;
-}
-
-// 非递归的中序遍历
-vector<int> InOrder(TreeNode* root) {
-    if (root == NULL) return vector<int>();
-    stack<TreeNode*> s;
-    vector<int> res;
-    s.push(root);
-    TreeNode* cur = root->left;
-    while (!s.empty() || cur != NULL) {
-        while (cur != NULL) {
-            s.push(cur);
-            cur = cur->left;
-        }
-        cur = s.top()->right;
-        res.push_back(s.top()->val);//在弹栈时访问根节点  
-        s.pop();
-    }
-    return res;
-}
-
-// 非递归的后序遍历
-vector<int> PostOrder(TreeNode* root) {
-    if (root == NULL) return vector<int>();
-    stack<TreeNode*> s;
-    stack<bool> isFirst;//存储是否是第一次被访问  
-    vector<int> res;
-    s.push(root);
-    isFirst.push(true);
-    TreeNode* cur = root->left;
-    while (!s.empty() || cur != NULL) {
-        while (cur != NULL) {
-            s.push(cur);
-            isFirst.push(true);
-            cur = cur->left;
-        }
-        if (isFirst.top())//如果第一次被访问更新标记，更新当前节点为右子树  
-        {
-            isFirst.pop();
-            isFirst.push(false);
-            cur = s.top()->right;
-        } else//如果已经被访问过一次，则返回值且弹出  
-        {
-            res.push_back(s.top()->val);
-            isFirst.pop();
-            s.pop();
-        }
-    }
-    return res;
-}
-#pragma endregion BITREE_OPERATION
+//#pragma region BITREE_OPERATION
+//// 二叉树
+//struct TreeNode {
+//    int val;
+//    TreeNode *left;
+//    TreeNode *right;
+//};
+//
+//// 非递归的先序遍历
+//vector<int> PreOrder(TreeNode* root) {
+//    if (root == NULL) return vector<int>();
+//    stack<TreeNode*> s;
+//    vector<int> res;
+//    s.push(root);
+//    res.push_back(root->val);
+//    TreeNode* cur = root->left;
+//    while (!s.empty() || cur != NULL) {
+//        while (cur != NULL)//遍历左子节点直到叶子节点  
+//        {
+//            s.push(cur);
+//            res.push_back(cur->val);
+//            cur = cur->left;
+//        }
+//        cur = s.top()->right;//将当前节点设为最近右子节点  
+//        s.pop();
+//    }
+//    return res;
+//}
+//
+//// 非递归的中序遍历
+//vector<int> InOrder(TreeNode* root) {
+//    if (root == NULL) return vector<int>();
+//    stack<TreeNode*> s;
+//    vector<int> res;
+//    s.push(root);
+//    TreeNode* cur = root->left;
+//    while (!s.empty() || cur != NULL) {
+//        while (cur != NULL) {
+//            s.push(cur);
+//            cur = cur->left;
+//        }
+//        cur = s.top()->right;
+//        res.push_back(s.top()->val);//在弹栈时访问根节点  
+//        s.pop();
+//    }
+//    return res;
+//}
+//
+//// 非递归的后序遍历
+//vector<int> PostOrder(TreeNode* root) {
+//    if (root == NULL) return vector<int>();
+//    stack<TreeNode*> s;
+//    stack<bool> isFirst;//存储是否是第一次被访问  
+//    vector<int> res;
+//    s.push(root);
+//    isFirst.push(true);
+//    TreeNode* cur = root->left;
+//    while (!s.empty() || cur != NULL) {
+//        while (cur != NULL) {
+//            s.push(cur);
+//            isFirst.push(true);
+//            cur = cur->left;
+//        }
+//        if (isFirst.top())//如果第一次被访问更新标记，更新当前节点为右子树  
+//        {
+//            isFirst.pop();
+//            isFirst.push(false);
+//            cur = s.top()->right;
+//        } else//如果已经被访问过一次，则返回值且弹出  
+//        {
+//            res.push_back(s.top()->val);
+//            isFirst.pop();
+//            s.pop();
+//        }
+//    }
+//    return res;
+//}
+//#pragma endregion BITREE_OPERATION
 
 #pragma region ONLINE_TEST
 // 刷题
@@ -271,6 +271,130 @@ void stackToQueue() {
     for (int i = 0; i < n; ++i) {
         cout << pop() << " ";
     }
+}
+
+// 从尾到头打印链表
+struct ListNode {
+    int val;
+    struct ListNode *next;
+    ListNode(int x) :
+        val(x), next(NULL) {
+    }
+};
+
+vector<int> printListFromTailToHead(ListNode* head) {
+    stack<int> values;
+    ListNode *p = head;
+    for (;p != NULL; p = p->next) {
+        values.push(p->val);
+    }
+    int len = values.size();
+    vector<int> res(len);
+    for (int i = 0; i < len; ++i) {
+        res[i] = values.top();
+        values.pop();
+    }
+    return res;
+}
+
+// 重建二叉树(先序和中序)
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+TreeNode* reConstructBinaryTree(vector<int> pre, vector<int> vin) {
+    TreeNode *root = NULL;
+
+    if (pre.size() > 0) {
+        vector<int> preLeft;
+        vector<int> preRight;
+        vector<int> vinLeft;
+        vector<int> vinRight;
+
+        int index = vin.size();
+        for (int i = 0; i < vin.size(); ++i) {
+            if (vin[i] == pre[0]) {
+                index = i;
+            }
+            if (i < index) {
+                vinLeft.push_back(vin[i]);
+                preLeft.push_back(pre[i + 1]);
+            } else if (i > index) {
+                vinRight.push_back(vin[i]);
+                preRight.push_back(pre[i]);
+            }
+        }
+        root = new TreeNode(pre[0]);
+        root->left = reConstructBinaryTree(preLeft, vinLeft);
+        root->right = reConstructBinaryTree(preRight, vinRight);
+    }
+    return root;
+}
+
+// 旋转数组的最小数字
+int minNumberInRotateArray(vector<int> rotateArray) {
+    if (rotateArray.size() <= 0) {
+        return 0;
+    }
+    int start = 0;
+    int end = rotateArray.size() - 1;
+    int mid = (start + end) / 2;
+
+    while (end - start > 1) {
+        mid = (start + end) / 2;
+        if ((rotateArray[mid] >= rotateArray[start]) && (rotateArray[mid] >= rotateArray[end])) {
+            start = mid;
+        } else if ((rotateArray[mid] <= rotateArray[start]) && (rotateArray[mid] <= rotateArray[end])) {
+            end = mid;
+        }
+    }
+    return min(rotateArray[start], rotateArray[end]);
+    //int i = 1;
+    //for (; (i < rotateArray.size() - 1) && (rotateArray[i] >= rotateArray[i - 1]); ++i) {}
+    //return rotateArray[i];
+}
+
+// 斐波拉契数列
+int fibonacci(int n) {
+    int pre1, pre2;
+    pre1 = 1;
+    pre2 = 0;
+    for (int i = 1; i < n; ++i) {
+        int temp = pre1;
+        pre1 += pre2;
+        pre2 = temp;
+    }
+    return (pre1 + pre2);
+}
+
+// 变态青蛙跳台阶
+int jumpFloorII(int number) {
+    vector<int> dp(number + 1, 0);
+    dp[0] = 1;
+    for (int i = 1; i <= number; ++i) {
+        for (int j = 0; j < i; ++j) {
+            dp[i] += dp[j];
+        }
+    }
+    return dp[number];
+}
+
+// 矩形覆盖
+int rectCover(int number) {
+    vector<int> dp(number + 1);
+    if (number <= 0) {
+        return 0;
+    }
+    dp[0] = 1;
+    dp[1] = 1;
+
+    for (int i = 2; i <= number; ++i) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    return dp[number];
 }
 #pragma endregion ONLINE_TEST
 
