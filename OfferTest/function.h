@@ -11,6 +11,21 @@
 
 using namespace std;
 
+#pragma region DATA_STRUCTURE
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+struct ListNode {
+    int val;
+    struct ListNode *next;
+    ListNode(int x) : val(x), next(NULL) {}
+};
+#pragma endregion DATA_STRUCTURE
+
 #pragma region BASIC_SORT
 // 经典排序算法
 // 冒泡排序
@@ -140,84 +155,78 @@ void basic_heapSort(vector<int> &arr) {
 // 计数排序
 #pragma endregion BASIC_SORT
 
-//#pragma region BITREE_OPERATION
-//// 二叉树
-//struct TreeNode {
-//    int val;
-//    TreeNode *left;
-//    TreeNode *right;
-//};
-//
-//// 非递归的先序遍历
-//vector<int> PreOrder(TreeNode* root) {
-//    if (root == NULL) return vector<int>();
-//    stack<TreeNode*> s;
-//    vector<int> res;
-//    s.push(root);
-//    res.push_back(root->val);
-//    TreeNode* cur = root->left;
-//    while (!s.empty() || cur != NULL) {
-//        while (cur != NULL)//遍历左子节点直到叶子节点  
-//        {
-//            s.push(cur);
-//            res.push_back(cur->val);
-//            cur = cur->left;
-//        }
-//        cur = s.top()->right;//将当前节点设为最近右子节点  
-//        s.pop();
-//    }
-//    return res;
-//}
-//
-//// 非递归的中序遍历
-//vector<int> InOrder(TreeNode* root) {
-//    if (root == NULL) return vector<int>();
-//    stack<TreeNode*> s;
-//    vector<int> res;
-//    s.push(root);
-//    TreeNode* cur = root->left;
-//    while (!s.empty() || cur != NULL) {
-//        while (cur != NULL) {
-//            s.push(cur);
-//            cur = cur->left;
-//        }
-//        cur = s.top()->right;
-//        res.push_back(s.top()->val);//在弹栈时访问根节点  
-//        s.pop();
-//    }
-//    return res;
-//}
-//
-//// 非递归的后序遍历
-//vector<int> PostOrder(TreeNode* root) {
-//    if (root == NULL) return vector<int>();
-//    stack<TreeNode*> s;
-//    stack<bool> isFirst;//存储是否是第一次被访问  
-//    vector<int> res;
-//    s.push(root);
-//    isFirst.push(true);
-//    TreeNode* cur = root->left;
-//    while (!s.empty() || cur != NULL) {
-//        while (cur != NULL) {
-//            s.push(cur);
-//            isFirst.push(true);
-//            cur = cur->left;
-//        }
-//        if (isFirst.top())//如果第一次被访问更新标记，更新当前节点为右子树  
-//        {
-//            isFirst.pop();
-//            isFirst.push(false);
-//            cur = s.top()->right;
-//        } else//如果已经被访问过一次，则返回值且弹出  
-//        {
-//            res.push_back(s.top()->val);
-//            isFirst.pop();
-//            s.pop();
-//        }
-//    }
-//    return res;
-//}
-//#pragma endregion BITREE_OPERATION
+#pragma region BITREE_OPERATION
+// 二叉树
+// 非递归的先序遍历
+vector<int> PreOrder(TreeNode* root) {
+    if (root == NULL) return vector<int>();
+    stack<TreeNode*> s;
+    vector<int> res;
+    s.push(root);
+    res.push_back(root->val);
+    TreeNode* cur = root->left;
+    while (!s.empty() || cur != NULL) {
+        while (cur != NULL)//遍历左子节点直到叶子节点  
+        {
+            s.push(cur);
+            res.push_back(cur->val);
+            cur = cur->left;
+        }
+        cur = s.top()->right;//将当前节点设为最近右子节点  
+        s.pop();
+    }
+    return res;
+}
+
+// 非递归的中序遍历
+vector<int> InOrder(TreeNode* root) {
+    if (root == NULL) return vector<int>();
+    stack<TreeNode*> s;
+    vector<int> res;
+    s.push(root);
+    TreeNode* cur = root->left;
+    while (!s.empty() || cur != NULL) {
+        while (cur != NULL) {
+            s.push(cur);
+            cur = cur->left;
+        }
+        cur = s.top()->right;
+        res.push_back(s.top()->val);//在弹栈时访问根节点  
+        s.pop();
+    }
+    return res;
+}
+
+// 非递归的后序遍历
+vector<int> PostOrder(TreeNode* root) {
+    if (root == NULL) return vector<int>();
+    stack<TreeNode*> s;
+    stack<bool> isFirst;//存储是否是第一次被访问  
+    vector<int> res;
+    s.push(root);
+    isFirst.push(true);
+    TreeNode* cur = root->left;
+    while (!s.empty() || cur != NULL) {
+        while (cur != NULL) {
+            s.push(cur);
+            isFirst.push(true);
+            cur = cur->left;
+        }
+        if (isFirst.top())//如果第一次被访问更新标记，更新当前节点为右子树  
+        {
+            isFirst.pop();
+            isFirst.push(false);
+            cur = s.top()->right;
+        } else//如果已经被访问过一次，则返回值且弹出  
+        {
+            res.push_back(s.top()->val);
+            isFirst.pop();
+            s.pop();
+        }
+    }
+    return res;
+}
+#pragma endregion BITREE_OPERATION
 
 #pragma region ONLINE_TEST
 // 刷题
@@ -274,14 +283,6 @@ void stackToQueue() {
 }
 
 // 从尾到头打印链表
-struct ListNode {
-    int val;
-    struct ListNode *next;
-    ListNode(int x) :
-        val(x), next(NULL) {
-    }
-};
-
 vector<int> printListFromTailToHead(ListNode* head) {
     stack<int> values;
     ListNode *p = head;
@@ -298,13 +299,6 @@ vector<int> printListFromTailToHead(ListNode* head) {
 }
 
 // 重建二叉树(先序和中序)
-struct TreeNode {
-    int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
-};
-
 TreeNode* reConstructBinaryTree(vector<int> pre, vector<int> vin) {
     TreeNode *root = NULL;
 
@@ -395,6 +389,131 @@ int rectCover(int number) {
         dp[i] = dp[i - 1] + dp[i - 2];
     }
     return dp[number];
+}
+
+// 从1到n整数中1出现的次数
+int numberOf1Between1AndN(unsigned int n) {
+    //ostringstream oss;
+    //oss << n;
+    //string str = oss.str();
+    //int len = str.length();
+    //cout << str << endl;
+    //if (len == 1) {
+    //    return ((str[0] == '0') ? 0 : 1);
+    //}
+    //int result = 0;
+    //int highDigit = n / static_cast<int>(pow(10, len - 1));
+    //if (highDigit > 1) {
+    //    result += (highDigit - 1) * (static_cast<int>(pow(10, len - 1)) - static_cast<int>(pow(9, len - 1)));
+    //    result += static_cast<int>(pow(10, len - 1));
+    //    result += numberOf1(n - highDigit * static_cast<int>(pow(10, len - 1)));
+    //} else {
+    //    result += static_cast<int>(pow(10, len - 1)) - static_cast<int>(pow(9, len - 1));
+    //    result += n - highDigit * static_cast<int>(pow(10, len - 1)) + 1;
+    //}
+    //return result;
+    return 0;
+}
+
+// 从1到n整数中包含1的整数的个数
+int numberOfBetween1AndN(unsigned int n) {
+    ostringstream oss;
+    oss << n;
+    string str = oss.str();
+    int len = str.length();
+    cout << str << endl;
+    if (len == 1) {
+        return ((str[0] == '0') ? 0 : 1);
+    }
+    int result = 0;
+    int highDigit = n / static_cast<int>(pow(10, len - 1));
+    if (highDigit > 1) {
+        result += (highDigit - 1) * (static_cast<int>(pow(10, len - 1)) - static_cast<int>(pow(9, len - 1)));
+        result += static_cast<int>(pow(10, len - 1));
+        result += numberOfBetween1AndN(n - highDigit * static_cast<int>(pow(10, len - 1)));
+    } else {
+        result += static_cast<int>(pow(10, len - 1)) - static_cast<int>(pow(9, len - 1));
+        result += n - highDigit * static_cast<int>(pow(10, len - 1)) + 1;
+    }
+    return result;
+}
+
+// 二进制中1的个数
+int numberOf1InBinary(int n) {
+    int count = 0;
+
+    //unsigned int flag = 1;
+    //while (flag <= n) {
+    //    if (n & flag) {
+    //        ++count;
+    //    }
+    //    flag <<= 1;
+    //}
+
+    while (n) {
+        ++count;
+        n &= (n - 1);
+    }
+
+    return count;
+}
+
+// 合并两个排序的链表(递归)
+ListNode *mergeSortedListRecursively(ListNode *pHead1, ListNode *pHead2) {
+    if (pHead1 == NULL) {
+        return pHead2;
+    } else if (pHead2 == NULL) {
+        return pHead1;
+    }
+    ListNode *head = NULL;
+    if (pHead1->val < pHead2->val) {
+        head = pHead1;
+        head->next = mergeSortedListRecursively(pHead1->next, pHead2);
+    } else {
+        head = pHead2;
+        head->next = mergeSortedListRecursively(pHead1, pHead2->next);
+    }
+    return head;
+}
+
+// 合并两个排序的链表(非递归)
+ListNode *mergeSortedList(ListNode *pHead1, ListNode *pHead2) {
+    ListNode *p = pHead1;
+    ListNode *q = pHead2;
+
+    if (p == NULL) {
+        return pHead2;
+    } else if (q == NULL) {
+        return pHead1;
+    }
+    ListNode *head = NULL;
+    ListNode *curNode = NULL;
+    if (p->val < q->val) {
+        head = pHead1;
+        p = p->next;
+    } else {
+        head = pHead2;
+        q = q->next;
+    }
+    curNode = head;
+
+    while (p != NULL && q != NULL) {
+        if (p->val < q->val) {
+            curNode->next = p;
+            p = p->next;
+        } else {
+            curNode->next = q;
+            q = q->next;
+        }
+        curNode = curNode->next;    
+    }
+
+    if (p == NULL) {
+        curNode->next = q;
+    } else {
+        curNode->next = p;
+    }
+    return head;
 }
 #pragma endregion ONLINE_TEST
 

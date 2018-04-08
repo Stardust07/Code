@@ -26,7 +26,9 @@ int main() {
     //cout << minNumberInRotateArray(arr);
     //cout << fibonacci(4);
     //cout << jumpFloorII(3);
-    cout << rectCover(3);
+    //cout << rectCover(3);
+    //cout << numberOf1Between1AndN(12);
+    cout << numberOf1InBinary(1);
 
     // ÃÀÍÅ
     //meituan_test_assignCoins();
