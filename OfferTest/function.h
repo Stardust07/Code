@@ -230,6 +230,21 @@ vector<int> PostOrder(TreeNode* root) {
 
 #pragma region ONLINE_TEST
 // 刷题
+// 二维数组中的查找
+bool findInPartiallySortedMatrix(int target, vector<vector<int> > arr) {
+    int j = arr[0].size() - 1;
+    for (int i = 0; i < arr.size(); ++i) {
+        for (; j >= 0; --j) {
+            if (arr[i][j] <= target) {
+                break;
+            }
+        }
+        if (j < 0) { return false; }
+        if (arr[i][j] == target) { return true; }
+    }
+    return false;
+}
+
 // 替换空格
 void replaceSpace(char *str, int length) {
     string s(str);
@@ -514,6 +529,31 @@ ListNode *mergeSortedList(ListNode *pHead1, ListNode *pHead2) {
         curNode->next = p;
     }
     return head;
+}
+
+int getUglyNumber(int index) {
+    if (index <= 0) { return 0; }
+    vector<int> uglyNumbers(index);
+    uglyNumbers[0] = 1;
+
+    int count = 1;
+    int maxMultiple2Index = 0;
+    int maxMultiple3Index = 0;
+    int maxMultiple5Index = 0;
+    while (count < index) {
+        int a = uglyNumbers[maxMultiple2Index] * 2;
+        int b = uglyNumbers[maxMultiple3Index] * 3;
+        int c = uglyNumbers[maxMultiple5Index] * 5;
+        uglyNumbers[count] = min(a, min(b, c));
+
+        while (uglyNumbers[maxMultiple2Index] * 2 <= uglyNumbers[count]) { ++maxMultiple2Index; }
+        while (uglyNumbers[maxMultiple3Index] * 3 <= uglyNumbers[count]) { ++maxMultiple3Index; }
+        while (uglyNumbers[maxMultiple5Index] * 5 <= uglyNumbers[count]) { ++maxMultiple5Index; }
+
+        ++count;
+    }
+
+    return uglyNumbers[index - 1];
 }
 #pragma endregion ONLINE_TEST
 
