@@ -531,6 +531,7 @@ ListNode *mergeSortedList(ListNode *pHead1, ListNode *pHead2) {
     return head;
 }
 
+// 丑数
 int getUglyNumber(int index) {
     if (index <= 0) { return 0; }
     vector<int> uglyNumbers(index);
@@ -554,6 +555,86 @@ int getUglyNumber(int index) {
     }
 
     return uglyNumbers[index - 1];
+}
+
+// 打印N个数组整体最大的topK
+struct HeapNode {
+    int value;
+    int arrNum;
+    int index;
+
+    HeapNode() :value(0), arrNum(-1), index(-1) {}
+    HeapNode(int v, int a, int i) :value(v), arrNum(a), index(i) {}
+};
+
+void heapify(vector<HeapNode> &heap, int root, int heapSize) {
+    auto swapInHeap = [&](int l, int r) {
+        HeapNode node = heap[l];
+        heap[l] = heap[r];
+        heap[r] = node;
+    };
+    int left = 2 * root + 1;
+    int right = 2 * root + 2;
+
+    int largest = root;
+    while (left < heapSize) {
+        if ((left < heapSize) && (heap[left].value > heap[root].value)) {
+            largest = left;
+        }
+        if ((right < heapSize) && (heap[right].value > heap[largest].value)) {
+            largest = right;
+        }
+        if (largest == root) { break; }
+        swapInHeap(root, largest);
+        root = largest;
+        left = 2 * root + 1;
+        right = 2 * root + 2;
+    }
+}
+
+void heapInsert(vector<HeapNode> &heap, int leaf) {
+    HeapNode node = heap[leaf];
+    while (leaf > 0) {
+        int root = (leaf - 1) / 2;
+        if (heap[root].value >= node.value) {
+            break;
+        }
+        heap[leaf] = heap[root];
+        leaf = root;
+    }
+    heap[leaf] = node;
+}
+
+void printTopK(vector<vector<int>> matrix, int topK) {
+    int numOfArrs = matrix.size();
+    if (numOfArrs <= 0) { return; }
+
+    int heapSize = numOfArrs;
+    vector<HeapNode> maxTopHeap(heapSize);
+
+    for (int i = 0; i < heapSize; ++i) {
+        int index = matrix[i].size() - 1;
+        maxTopHeap[i] = HeapNode(matrix[i][index], i, index);
+        heapInsert(maxTopHeap, i);
+    }
+    int k = 0;
+    while (k < topK) {
+        cout << maxTopHeap[0].value << " ";
+        //for (int i = 0; i < heapSize; ++i) {
+        //    cout << maxTopHeap[i].value << " ";
+        //}
+        //cout << endl;
+        int arr = maxTopHeap[0].arrNum;
+        int index = maxTopHeap[0].index;
+        if (index > 0) {
+            maxTopHeap[0] = HeapNode(matrix[arr][index - 1], arr, index - 1);
+        } else {
+            maxTopHeap[0] = maxTopHeap[--heapSize];
+        }
+        heapify(maxTopHeap, 0, heapSize);
+
+        ++k;
+    }
 }
 #pragma endregion ONLINE_TEST
 
