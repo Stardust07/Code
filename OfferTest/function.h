@@ -89,9 +89,39 @@ void basic_shellSort(vector<int> &arr) {
 }
 
 // 快速排序
-void partition() {}
+int partition(vector<int> &arr, int left, int right) {
+    auto swapInArray = [&](int l, int r) {
+        int value = arr[l];
+        arr[l] = arr[r];
+        arr[r] = value;
+    };
+    int pivot = arr[left];
+    int tail = right;
+    int head = left;
 
-void basic_quickSort(vector<int> &arr) {}
+    while (tail > head) {
+        while ((arr[tail] >= pivot) && (tail > head)) { --tail; }
+        if (tail <= head) { break; }
+        swapInArray(head, tail);
+        ++head;
+        while ((arr[head] <= pivot) && (tail > head)) { ++head; }
+        if (tail <= head) { break; }
+        swapInArray(tail, head);
+        --tail;
+    }
+    return tail;
+}
+
+void quickSort(vector<int> &arr, int left, int right) {
+    if (right - left <= 0) { return; }
+    int index = partition(arr, left, right);
+    quickSort(arr, left, index - 1);
+    quickSort(arr, index + 1, right);
+}
+
+void basic_quickSort(vector<int> &arr) {
+    quickSort(arr, 0, arr.size() - 1);
+}
 
 // 归并排序
 void merge();
@@ -135,6 +165,7 @@ void basic_heapSort(vector<int> &arr) {
         cout << arr[j] << " ";
     }
     cout << endl;
+
     for (int i = len - 1; i > 0; --i) {
         swapInArray(arr, 0, i);
         adjustHeap(arr, 0, i);
@@ -636,6 +667,37 @@ void printTopK(vector<vector<int>> matrix, int topK) {
         ++k;
     }
 }
+
+// 打印1到最大的n位数(递归)
+void printStringNumber(char *str) {
+    int len = strlen(str);
+    bool firstZero = true;
+    for (int i = 0; i < len; ++i) {
+        if (firstZero && (str[i] == '0')) {
+            continue;
+        }
+        firstZero = false;
+        cout << str[i];
+    }
+    if(!firstZero) { cout << endl; }
+}
+
+void print1ToMaxOfNDigitsRecursively(char *prefix, int length, int index) {
+    if (index == length) {
+        printStringNumber(prefix);
+        return;
+    }
+    for (int i = 0; i < 10; ++i) {
+        prefix[index] = i + '0';
+        print1ToMaxOfNDigitsRecursively(prefix, length, index + 1);
+    }
+}
+
+void print1ToMaxOfNDigits(int n) {
+    char *str = new char[n + 1];
+    str[n] = '\0';
+    print1ToMaxOfNDigitsRecursively(str, n, 0);
+}
 #pragma endregion ONLINE_TEST
 
 #pragma region MEITUAN_TEST
@@ -1096,6 +1158,69 @@ void zhaohang_real_integerPart() {
         }
     }
     cout << result;
+}
+
+void zhaohang_real_chess() {
+    const int MOD = 1000000007;
+    const int xBound = 8;
+    const int yBound = 9;
+    int moveNum;
+    cin >> moveNum;
+
+    int x, y;
+    cin >> x >> y;
+
+    vector<vector<vector<int>>> dp(xBound + 1, vector<vector<int>>(yBound + 1, vector<int>(moveNum + 1, 0)));
+
+    dp[0][0][0] = 1;
+    for (int k = 1; k <= moveNum; ++k) {
+        for (int i = 0; i <= xBound; ++i) {
+            for (int j = 0; j <= yBound; ++j) {
+                if (i >= 1) {
+                    if (j >= 2) {
+                        dp[i][j][k] += dp[i - 1][j - 2][k - 1];
+                        dp[i][j][k] %= MOD;
+                    } 
+                    if (j <= yBound - 2) {
+                        dp[i][j][k] += dp[i - 1][j + 2][k - 1];
+                        dp[i][j][k] %= MOD;
+                    }
+                }
+                if (i >= 2) {
+                    if (j >= 1) {
+                        dp[i][j][k] += dp[i - 2][j - 1][k - 1];
+                        dp[i][j][k] %= MOD;
+                    }
+                    if (j <= yBound - 1) {
+                        dp[i][j][k] += dp[i - 2][j + 1][k - 1];
+                        dp[i][j][k] %= MOD;
+                    }
+                }
+                if (i <= xBound - 1) {
+                    if (j >= 2) {
+                        dp[i][j][k] += dp[i + 1][j - 2][k - 1];
+                        dp[i][j][k] %= MOD;
+                    }
+                    if (j <= yBound - 2) {
+                        dp[i][j][k] += dp[i + 1][j + 2][k - 1];
+                        dp[i][j][k] %= MOD;
+                    }
+                }
+                if (i <= xBound - 2) {
+                    if (j >= 1) {
+                        dp[i][j][k] += dp[i + 2][j - 1][k - 1];
+                        dp[i][j][k] %= MOD;
+                    }
+                    if (j <= yBound - 1) {
+                        dp[i][j][k] += dp[i + 2][j + 1][k - 1];
+                        dp[i][j][k] %= MOD;
+                    }
+                }
+            }
+        }
+    }
+    cout << dp[x][y][moveNum];
+
 }
 #pragma endregion ZHAOHANG_REAL
 
