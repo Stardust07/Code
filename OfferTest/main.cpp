@@ -9,9 +9,9 @@
 using namespace std;
 
 int main() {
-    //vector<int> arr = { 7, 3, 2, 4, 5, 1, 6, 8, 6, 2 };
+    vector<int> arr = { 7, 3, 2, 4, 5, 1, 6, 8, 6, 2 };
     //vector<int> arr = { 16, 7, 3, 20, 17, 8 };
-    vector<int> arr = { 3, 5, 1, 1, 2, 2, 3, 4 };
+    //vector<int> arr = { 3, 5, 7, 8, 12, 12, 13, 14 };
     vector<vector<int>> arrs = { 
         { 1, 2, 3, 4, 5, 6, 7 },
         { 2, 6, 7, 7, 8, 9, 9 },
@@ -22,7 +22,7 @@ int main() {
     //basic_bubbleSort(arr);
     //basic_selectSort();
     //basic_insertSort(arr);
-    //basic_shellSort(arr);
+    basic_shellSort(arr);
     //basic_quickSort(arr);
     //basic_mergeSort(arr);
     //basic_heapSort(arr);
@@ -37,7 +37,7 @@ int main() {
     //cout << numberOf1InBinary(1);
     //cout << getUglyNumber(11);
     //printTopK(arrs, 25);
-    print1ToMaxOfNDigits(2);
+    //print1ToMaxOfNDigits(2);
 
     // ÃÀÍÅ
     //meituan_test_assignCoins();

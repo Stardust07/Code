@@ -75,16 +75,19 @@ void basic_insertSort(vector<int> &arr) {
 // œ£∂˚≈≈–Ú
 void basic_shellSort(vector<int> &arr) {
     int len = arr.size();
-    for (int i = 1; i < len; ++i) {
-        int value = arr[i];
-        for (int j = i - 1; j >= 0; --j) {
-            if (value < arr[j]) {
-                arr[j + 1] = arr[j];
-                arr[j] = value;
-            } else {
-                break;
+    int shellFactor = len / 3;
+
+    while (shellFactor >= 1) {
+        for (int i = shellFactor; i < len; ++i) {
+            int value = arr[i];
+            int j = i - shellFactor;
+            for (; (j >= 0) && (value < arr[j]); j -= shellFactor) {
+                arr[j + shellFactor] = arr[j];
             }
+            arr[j + shellFactor] = value;
         }
+
+        shellFactor /= 2;
     }
 }
 
@@ -124,9 +127,49 @@ void basic_quickSort(vector<int> &arr) {
 }
 
 // πÈ≤¢≈≈–Ú
-void merge();
+void merge(vector<int> &arr, vector<int> &left, vector<int> &right) {
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    while (k < left.size() + right.size()) {
+        if (i >= left.size()) {
+            arr[k] = right[j];
+            ++j;
+        } else if (j >= right.size()) {
+            arr[k] = left[i];
+            ++i;
+        } else {
+            if (left[i] < right[j]) {
+                arr[k] = left[i];
+                ++i;
+            } else {
+                arr[k] = right[j];
+                ++j;
+            }
+        }
+        ++k;
+    }
+}
 
-void basic_mergeSort(vector<int> &arr) {}
+void basic_mergeSort(vector<int> &arr) {
+    if (arr.size() <= 1) {
+        return;
+    }
+    vector<int> left;
+    vector<int> right;
+
+    int mid = floor(arr.size() / 2);
+    for (int i = 0; i < arr.size(); ++i) {
+        if (i < mid) {
+            left.push_back(arr[i]);
+        } else {
+            right.push_back(arr[i]);
+        }
+    }
+    basic_mergeSort(left);
+    basic_mergeSort(right);
+    merge(arr, left, right);
+}
 
 // ∂—≈≈–Ú
 void swapInArray(vector<int> &arr, int l, int r) {
