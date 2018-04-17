@@ -422,22 +422,29 @@ int minNumberInRotateArray(vector<int> rotateArray) {
     if (rotateArray.size() <= 0) {
         return 0;
     }
-    int start = 0;
-    int end = rotateArray.size() - 1;
-    int mid = (start + end) / 2;
+    int lo = 0;
+    int hi = rotateArray.size() - 1;
+    int mid = lo;
 
-    while (end - start > 1) {
-        mid = (start + end) / 2;
-        if ((rotateArray[mid] >= rotateArray[start]) && (rotateArray[mid] >= rotateArray[end])) {
-            start = mid;
-        } else if ((rotateArray[mid] <= rotateArray[start]) && (rotateArray[mid] <= rotateArray[end])) {
-            end = mid;
+    while (rotateArray[lo] >= rotateArray[hi]) {
+        if (hi - lo == 1) { return rotateArray[hi]; }
+
+        mid = (lo + hi) / 2;
+        if ((rotateArray[mid] == rotateArray[lo]) && (rotateArray[mid] == rotateArray[hi])) {
+            int ret = rotateArray[lo];
+            for (int i = lo + 1; i <= hi; ++i) {
+                ret = min(ret, rotateArray[i]);
+            }
+            return ret;
+        }
+
+        if ((rotateArray[mid] >= rotateArray[lo])) {
+            lo = mid;
+        } else if ((rotateArray[mid] <= rotateArray[hi])) {
+            hi = mid;
         }
     }
-    return min(rotateArray[start], rotateArray[end]);
-    //int i = 1;
-    //for (; (i < rotateArray.size() - 1) && (rotateArray[i] >= rotateArray[i - 1]); ++i) {}
-    //return rotateArray[i];
+    return rotateArray[mid];
 }
 
 // ì³²¨À­ÆõÊýÁÐ
