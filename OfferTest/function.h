@@ -492,6 +492,51 @@ int numberOf1InBinary(int n) {
     return count;
 }
 
+
+// 11.数值的整数次方
+double powWithUnsignedExponent(double base, int exponent) {
+    //if (exponent == 0) {
+    //    return 1.0;
+    //}
+    //if (exponent == 1) {
+    //    return base;
+    //}
+    //double result = powWithUnsignedExponent(base, exponent >> 1);
+    //result *= result;
+    //if (exponent & 0x1 == 1) {
+    //    result *= base;
+    //}
+    //return result;
+
+    stack<int> indices;
+    for (int i = exponent; i >= 1; i >>= 1) {
+        indices.push(i);
+    }
+    double result = 1.0;
+    int len = indices.size();
+    for (int i = 0; i < len; ++i) {
+        int e = indices.top();
+        result *= result;
+        if (e & 0x1 == 1) { result *= base; }
+        indices.pop();
+    }
+    return result;
+}
+
+double power(double base, int exponent) {
+    double res = 1.0;
+
+    if (abs(base - 0.0) <= 0.0000001 && exponent < 0) {
+        // 特殊情况：底数为零指数为负
+        return 0.0;
+    }
+
+    res = powWithUnsignedExponent(base, abs(exponent));
+
+    res = (exponent < 0) ? (1 / res) : res;
+    return res;
+}
+
 // 12.打印1到最大的n位数(递归)
 void printStringNumber(char *str) {
     int len = strlen(str);
@@ -1371,4 +1416,49 @@ void tencent_real_assignMachine() {
 }
 
 void tencent_real_assignMachine();
+
+// 微众银行
+// 有限域
+bool isPrime(int x, vector<int> &primes) {
+    for (int i = 0; primes[i] * primes[i] <= x; ++i) { //用primes中存储的素数做为试除因子。 
+        if (x % primes[i] == 0) { return false; }
+    }
+    return true;
+}
+
+vector<int> countPrimes(int n) {
+    vector<int> primes;
+    if (n < 2) { return primes; }
+
+    if (n >= 2) { // 2是第一个素数
+        primes.push_back(2);
+    }
+
+    for (int i = 3; i <= n; ++i) {
+        if (isPrime(i, primes)) {
+            primes.push_back(i);
+        }
+    }
+    return primes;
+}
+
+int getInfinityDomain() {
+    int n;
+    cin >> n;
+
+    int result = 0;
+
+    if (n <= 0) { return 0; }
+    vector<int> primes = countPrimes(n);
+
+    for (int i = 0; i < primes.size(); ++i) {
+        for (int k = 2; pow(primes[i], k) <= n; ++k) {
+            ++result;
+        }
+    }
+    result += primes.size();
+    cout << result;
+    return result;
+}
+
 #pragma endregion TENCENT_REAL

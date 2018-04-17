@@ -22,22 +22,38 @@ int main() {
     //basic_bubbleSort(arr);
     //basic_selectSort();
     //basic_insertSort(arr);
-    basic_shellSort(arr);
+    //basic_shellSort(arr);
     //basic_quickSort(arr);
     //basic_mergeSort(arr);
     //basic_heapSort(arr);
 
-    //replaceSpace("Hello", 5);
+
+    //cout << findInPartiallySortedMatrix(4, arrs);
+    //replaceSpace("Hello world", 11);
+    //printListFromTailToHead();
+    //reConstructBinaryTree();
     //stackToQueue();
-    //cout << minNumberInRotateArray(arr);
+    //cout << minNumberInRotateArray({ 2, 3, 4, 1, 2 });
     //cout << fibonacci(4);
+    //cout << numberOf1InBinary(1);
+    cout << power(2, 3);
+    //print1ToMaxOfNDigits(2);
+    //deleteNode();
+    //14
+    //15
+    //reverseList();
+    //mergeSortedListRecursively();
+    //mergeSortedList();
+    //18-31
+    //cout << numberOf1Between1AndN(1000);
+    //cout << numberOfBetween1AndN(1000);
+    //33
+    //cout << getUglyNumber(11);
+    //35-67
+
     //cout << jumpFloorII(3);
     //cout << rectCover(3);
-    //cout << numberOf1Between1AndN(12);
-    //cout << numberOf1InBinary(1);
-    //cout << getUglyNumber(11);
     //printTopK(arrs, 25);
-    //print1ToMaxOfNDigits(2);
 
     // ÃÀÍÅ
     //meituan_test_assignCoins();
@@ -66,5 +82,6 @@ int main() {
     //tencent_real_reverseArray();
     //tencent_real_songList();
     //tencent_real_assignMachine();
+    //getInfinityDomain();
     return 0;
 }
