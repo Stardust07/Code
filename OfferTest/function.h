@@ -304,7 +304,7 @@ vector<int> PostOrder(TreeNode* root) {
 
 #pragma region ONLINE_TEST
 // 刷题
-// 二维数组中的查找
+// 03.二维数组中的查找
 bool findInPartiallySortedMatrix(int target, vector<vector<int> > arr) {
     int j = arr[0].size() - 1;
     for (int i = 0; i < arr.size(); ++i) {
@@ -319,7 +319,7 @@ bool findInPartiallySortedMatrix(int target, vector<vector<int> > arr) {
     return false;
 }
 
-// 替换空格
+// 04.替换空格
 void replaceSpace(char *str, int length) {
     string s(str);
     ostringstream oss;
@@ -336,7 +336,53 @@ void replaceSpace(char *str, int length) {
     strcpy(str, oss.str().c_str());
 }
 
-// 用两个栈实现队列
+// 05.从尾到头打印链表
+vector<int> printListFromTailToHead(ListNode* head) {
+    stack<int> values;
+    ListNode *p = head;
+    for (; p != NULL; p = p->next) {
+        values.push(p->val);
+    }
+    int len = values.size();
+    vector<int> res(len);
+    for (int i = 0; i < len; ++i) {
+        res[i] = values.top();
+        values.pop();
+    }
+    return res;
+}
+
+// 06.重建二叉树(先序和中序)
+TreeNode* reConstructBinaryTree(vector<int> pre, vector<int> vin) {
+    TreeNode *root = NULL;
+
+    if (pre.size() > 0) {
+        vector<int> preLeft;
+        vector<int> preRight;
+        vector<int> vinLeft;
+        vector<int> vinRight;
+
+        int index = vin.size();
+        for (int i = 0; i < vin.size(); ++i) {
+            if (vin[i] == pre[0]) {
+                index = i;
+            }
+            if (i < index) {
+                vinLeft.push_back(vin[i]);
+                preLeft.push_back(pre[i + 1]);
+            } else if (i > index) {
+                vinRight.push_back(vin[i]);
+                preRight.push_back(pre[i]);
+            }
+        }
+        root = new TreeNode(pre[0]);
+        root->left = reConstructBinaryTree(preLeft, vinLeft);
+        root->right = reConstructBinaryTree(preRight, vinRight);
+    }
+    return root;
+}
+
+// 07.用两个栈实现队列
 void stackToQueue() {
     stack<int> stack1;
     stack<int> stack2;
@@ -371,53 +417,7 @@ void stackToQueue() {
     }
 }
 
-// 从尾到头打印链表
-vector<int> printListFromTailToHead(ListNode* head) {
-    stack<int> values;
-    ListNode *p = head;
-    for (;p != NULL; p = p->next) {
-        values.push(p->val);
-    }
-    int len = values.size();
-    vector<int> res(len);
-    for (int i = 0; i < len; ++i) {
-        res[i] = values.top();
-        values.pop();
-    }
-    return res;
-}
-
-// 重建二叉树(先序和中序)
-TreeNode* reConstructBinaryTree(vector<int> pre, vector<int> vin) {
-    TreeNode *root = NULL;
-
-    if (pre.size() > 0) {
-        vector<int> preLeft;
-        vector<int> preRight;
-        vector<int> vinLeft;
-        vector<int> vinRight;
-
-        int index = vin.size();
-        for (int i = 0; i < vin.size(); ++i) {
-            if (vin[i] == pre[0]) {
-                index = i;
-            }
-            if (i < index) {
-                vinLeft.push_back(vin[i]);
-                preLeft.push_back(pre[i + 1]);
-            } else if (i > index) {
-                vinRight.push_back(vin[i]);
-                preRight.push_back(pre[i]);
-            }
-        }
-        root = new TreeNode(pre[0]);
-        root->left = reConstructBinaryTree(preLeft, vinLeft);
-        root->right = reConstructBinaryTree(preRight, vinRight);
-    }
-    return root;
-}
-
-// 旋转数组的最小数字
+// 08.旋转数组的最小数字
 int minNumberInRotateArray(vector<int> rotateArray) {
     if (rotateArray.size() <= 0) {
         return 0;
@@ -447,7 +447,7 @@ int minNumberInRotateArray(vector<int> rotateArray) {
     return rotateArray[mid];
 }
 
-// 斐波拉契数列
+// 09.斐波拉契数列
 int fibonacci(int n) {
     int pre1, pre2;
     pre1 = 1;
@@ -472,69 +472,7 @@ int jumpFloorII(int number) {
     return dp[number];
 }
 
-// 矩形覆盖
-int rectCover(int number) {
-    vector<int> dp(number + 1);
-    if (number <= 0) {
-        return 0;
-    }
-    dp[0] = 1;
-    dp[1] = 1;
-
-    for (int i = 2; i <= number; ++i) {
-        dp[i] = dp[i - 1] + dp[i - 2];
-    }
-    return dp[number];
-}
-
-// 从1到n整数中1出现的次数
-int numberOf1Between1AndN(unsigned int n) {
-    //ostringstream oss;
-    //oss << n;
-    //string str = oss.str();
-    //int len = str.length();
-    //cout << str << endl;
-    //if (len == 1) {
-    //    return ((str[0] == '0') ? 0 : 1);
-    //}
-    //int result = 0;
-    //int highDigit = n / static_cast<int>(pow(10, len - 1));
-    //if (highDigit > 1) {
-    //    result += (highDigit - 1) * (static_cast<int>(pow(10, len - 1)) - static_cast<int>(pow(9, len - 1)));
-    //    result += static_cast<int>(pow(10, len - 1));
-    //    result += numberOf1(n - highDigit * static_cast<int>(pow(10, len - 1)));
-    //} else {
-    //    result += static_cast<int>(pow(10, len - 1)) - static_cast<int>(pow(9, len - 1));
-    //    result += n - highDigit * static_cast<int>(pow(10, len - 1)) + 1;
-    //}
-    //return result;
-    return 0;
-}
-
-// 从1到n整数中包含1的整数的个数
-int numberOfBetween1AndN(unsigned int n) {
-    ostringstream oss;
-    oss << n;
-    string str = oss.str();
-    int len = str.length();
-    cout << str << endl;
-    if (len == 1) {
-        return ((str[0] == '0') ? 0 : 1);
-    }
-    int result = 0;
-    int highDigit = n / static_cast<int>(pow(10, len - 1));
-    if (highDigit > 1) {
-        result += (highDigit - 1) * (static_cast<int>(pow(10, len - 1)) - static_cast<int>(pow(9, len - 1)));
-        result += static_cast<int>(pow(10, len - 1));
-        result += numberOfBetween1AndN(n - highDigit * static_cast<int>(pow(10, len - 1)));
-    } else {
-        result += static_cast<int>(pow(10, len - 1)) - static_cast<int>(pow(9, len - 1));
-        result += n - highDigit * static_cast<int>(pow(10, len - 1)) + 1;
-    }
-    return result;
-}
-
-// 二进制中1的个数
+// 10.二进制中1的个数
 int numberOf1InBinary(int n) {
     int count = 0;
 
@@ -554,7 +492,77 @@ int numberOf1InBinary(int n) {
     return count;
 }
 
-// 合并两个排序的链表(递归)
+// 12.打印1到最大的n位数(递归)
+void printStringNumber(char *str) {
+    int len = strlen(str);
+    bool firstZero = true;
+    for (int i = 0; i < len; ++i) {
+        if (firstZero && (str[i] == '0')) {
+            continue;
+        }
+        firstZero = false;
+        cout << str[i];
+    }
+    if (!firstZero) { cout << endl; }
+}
+
+void print1ToMaxOfNDigitsRecursively(char *prefix, int length, int index) {
+    if (index == length) {
+        printStringNumber(prefix);
+        return;
+    }
+    for (int i = 0; i < 10; ++i) {
+        prefix[index] = i + '0';
+        print1ToMaxOfNDigitsRecursively(prefix, length, index + 1);
+    }
+}
+
+void print1ToMaxOfNDigits(int n) {
+    char *str = new char[n + 1];
+    str[n] = '\0';
+    print1ToMaxOfNDigitsRecursively(str, n, 0);
+}
+
+
+// 13.在O（1）时间删除链表结点
+ListNode *deleteNode(ListNode *head, ListNode *toBeDeleted) {
+    if (toBeDeleted == head) {
+        head = toBeDeleted->next;
+        delete toBeDeleted;
+    } else if (toBeDeleted->next == NULL) {
+        ListNode *p = head;
+        while (p->next != toBeDeleted) {
+            p = p->next;
+        }
+        p->next = NULL;
+        delete toBeDeleted;
+    } else {
+        ListNode *next = toBeDeleted->next;
+        toBeDeleted->val = next->val;
+        toBeDeleted->next = next->next;
+        delete next;
+    }
+
+    return head;
+}
+
+// 16.反转链表
+ListNode *reverseList(ListNode *head) {
+    ListNode *cur = head;
+    ListNode *pre = NULL;
+    ListNode *reverseHead = NULL;
+
+    while (cur != NULL) {
+        reverseHead = cur;
+        ListNode *next = cur->next;
+        cur->next = pre;
+        pre = cur;
+        cur = next;
+    }
+    return reverseHead;
+}
+
+// 17.合并两个排序的链表(递归)
 ListNode *mergeSortedListRecursively(ListNode *pHead1, ListNode *pHead2) {
     if (pHead1 == NULL) {
         return pHead2;
@@ -572,7 +580,7 @@ ListNode *mergeSortedListRecursively(ListNode *pHead1, ListNode *pHead2) {
     return head;
 }
 
-// 合并两个排序的链表(非递归)
+// 17.合并两个排序的链表(非递归)
 ListNode *mergeSortedList(ListNode *pHead1, ListNode *pHead2) {
     ListNode *p = pHead1;
     ListNode *q = pHead2;
@@ -601,7 +609,7 @@ ListNode *mergeSortedList(ListNode *pHead1, ListNode *pHead2) {
             curNode->next = q;
             q = q->next;
         }
-        curNode = curNode->next;    
+        curNode = curNode->next;
     }
 
     if (p == NULL) {
@@ -612,7 +620,36 @@ ListNode *mergeSortedList(ListNode *pHead1, ListNode *pHead2) {
     return head;
 }
 
-// 丑数
+// 32.从1到n整数中1出现的次数
+int numberOf1Between1AndN(unsigned int n) {
+
+    return 0;
+}
+
+// 32.从1到n整数中包含1的整数的个数
+int numberOfBetween1AndN(unsigned int n) {
+    ostringstream oss;
+    oss << n;
+    string str = oss.str();
+    int len = str.length();
+    cout << str << endl;
+    if (len == 1) {
+        return ((str[0] == '0') ? 0 : 1);
+    }
+    int result = 0;
+    int highDigit = n / static_cast<int>(pow(10, len - 1));
+    if (highDigit > 1) {
+        result += (highDigit - 1) * (static_cast<int>(pow(10, len - 1)) - static_cast<int>(pow(9, len - 1)));
+        result += static_cast<int>(pow(10, len - 1));
+        result += numberOfBetween1AndN(n - highDigit * static_cast<int>(pow(10, len - 1)));
+    } else {
+        result += static_cast<int>(pow(10, len - 1)) - static_cast<int>(pow(9, len - 1));
+        result += n - highDigit * static_cast<int>(pow(10, len - 1)) + 1;
+    }
+    return result;
+}
+
+// 34.丑数
 int getUglyNumber(int index) {
     if (index <= 0) { return 0; }
     vector<int> uglyNumbers(index);
@@ -636,6 +673,21 @@ int getUglyNumber(int index) {
     }
 
     return uglyNumbers[index - 1];
+}
+
+// 矩形覆盖
+int rectCover(int number) {
+    vector<int> dp(number + 1);
+    if (number <= 0) {
+        return 0;
+    }
+    dp[0] = 1;
+    dp[1] = 1;
+
+    for (int i = 2; i <= number; ++i) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+    return dp[number];
 }
 
 // 打印N个数组整体最大的topK
@@ -716,37 +768,6 @@ void printTopK(vector<vector<int>> matrix, int topK) {
 
         ++k;
     }
-}
-
-// 打印1到最大的n位数(递归)
-void printStringNumber(char *str) {
-    int len = strlen(str);
-    bool firstZero = true;
-    for (int i = 0; i < len; ++i) {
-        if (firstZero && (str[i] == '0')) {
-            continue;
-        }
-        firstZero = false;
-        cout << str[i];
-    }
-    if(!firstZero) { cout << endl; }
-}
-
-void print1ToMaxOfNDigitsRecursively(char *prefix, int length, int index) {
-    if (index == length) {
-        printStringNumber(prefix);
-        return;
-    }
-    for (int i = 0; i < 10; ++i) {
-        prefix[index] = i + '0';
-        print1ToMaxOfNDigitsRecursively(prefix, length, index + 1);
-    }
-}
-
-void print1ToMaxOfNDigits(int n) {
-    char *str = new char[n + 1];
-    str[n] = '\0';
-    print1ToMaxOfNDigitsRecursively(str, n, 0);
 }
 #pragma endregion ONLINE_TEST
 
