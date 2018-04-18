@@ -8,14 +8,85 @@
 
 using namespace std;
 
-ListNode *constructLinkList() {
-    ListNode *head = new ListNode(1);
-    head->next = new ListNode(2);
-    head->next->next = new ListNode(3);
-    head->next->next->next = new ListNode(4);
-    head->next->next->next->next = new ListNode(5);
-    head->next->next->next->next->next = new ListNode(6);
+BiTreeNode *constructBiTree(vector<int> list) {
+    if (list.size() <= 0) { return NULL; }
+
+    BiTreeNode *root = new BiTreeNode(list[0]);
+    BiTreeNode *p = root;
+    BiTreeNode *r = NULL;
+    int i = 0;
+    bool leftFinished = false;
+    bool rightFinished = false;
+
+    while ((2 * i + 1) < list.size()) {
+        if (p) {
+            if (list[2 * i + 1] != '#') {
+                p->left = new BiTreeNode(list[2 * i + 1]);
+            }
+            if (((2 * i + 2) < list.size()) && (list[2 * i + 2] != '#')) {
+                p->right = new BiTreeNode(list[2 * i + 2]);
+            }
+        }
+
+        if (!leftFinished) {
+            r = p;
+            p = p->left;
+            leftFinished = true;
+        } else if (!rightFinished) {
+            p = r->right;
+            rightFinished = true;
+        } else {
+            r = r->left;
+            p = r->left;
+            leftFinished = false;
+            rightFinished = false;
+        }
+
+        ++i;
+    }
+    return root;
+}
+
+void printBiTree(BiTreeNode *root) {
+    if (!root) { return; }
+    
+    queue<BiTreeNode *> nodes;
+    nodes.push(root);
+    while (!nodes.empty()) {
+        BiTreeNode *r = nodes.front();
+        if (r) {
+            cout << r->val << " ";
+        } else {
+            cout << "#" << " ";
+        }
+        nodes.pop();
+        if (r->left || r->right) {
+            nodes.push(r->left);
+            nodes.push(r->right);
+        }
+    }
+
+}
+
+ListNode *constructLinkList(vector<int> list) {
+    if (list.size() <= 0) { return NULL; }
+    ListNode *head = new ListNode(list[0]);
+    ListNode *p = head;
+    for (int i = 1; i < list.size(); ++i, p = p->next) {
+        p->next = new ListNode(list[i]);
+    }
     return head;
+}
+
+void printLinkList(ListNode *head) {
+    if (!head) { return; }
+
+    ListNode *p = head;
+    while (p->next) {
+        cout << p->val << " ";
+        p = p->next;
+    }
+    cout << p->val << endl;
 }
 
 int main() {
@@ -26,8 +97,9 @@ int main() {
         { 3, 4, 5, 6, 8, 9, 12 },
         { 8, 8, 8, 9, 9, 9, 12 },
     };
-    ListNode *linkList = constructLinkList();
-
+    ListNode *linkList = constructLinkList({ 1, 2, 3, 4, 5, 6 });
+    BiTreeNode *biTree = constructBiTree({ 8, '#', 10, 5, 7, 9, 11 });
+    printBiTree(biTree);
     // »ù´¡ÅÅÐòËã·¨
     //basic_bubbleSort(arr);
     //basic_selectSort(arr);
@@ -54,7 +126,11 @@ int main() {
     //reverseList(linkList);
     //mergeSortedListRecursively();
     //mergeSortedList();
-    //18-31
+    //cout << hasSubtree();
+    //mirrorRecursively();
+    //mirror(biTree);
+    //20-31
+
     //cout << numberOf1Between1AndN(1000);
     //cout << numberOfBetween1AndN(1000);
     //33

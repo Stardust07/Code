@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <stack>
+#include <queue>
 
 #include <algorithm>
 
@@ -569,7 +570,7 @@ void print1ToMaxOfNDigits(int n) {
 }
 
 
-// 13.在O（1）时间删除链表结点
+// 13.在O(1)时间删除链表结点
 ListNode *deleteNode(ListNode *head, ListNode *toBeDeleted) {
     if (toBeDeleted == head) {
         head = toBeDeleted->next;
@@ -600,12 +601,21 @@ void reorderOddEven(vector<int> &arr) {
     };
     if (arr.size() <= 1) { return; }
 
-    int head = 0;
-    int tail = arr.size() - 1;
-    while (head < tail) {
-        while ((head < tail) && (arr[head] % 2 != 0)) { ++head; }
-        while ((head < tail) && (arr[tail] % 2 == 0)) { --tail; }
-        swapInArray(head, tail);
+    //int head = 0;
+    //int tail = arr.size() - 1;
+    //while (head < tail) {
+    //    while ((head < tail) && (arr[head] % 2 != 0)) { ++head; }
+    //    while ((head < tail) && (arr[tail] % 2 == 0)) { --tail; }
+    //    swapInArray(head, tail);
+    //}
+
+    // 保证奇数和奇数，偶数和偶数之间的相对位置不变
+    for (int i = 0; i < arr.size(); ++i) {
+        for (int j = 0; j < arr.size() - i - 1; ++j) {
+            if ((arr[j] % 2 == 0) && (arr[j + 1] % 2 != 0)) {
+                swapInArray(j, j + 1);
+            }
+        }
     }
 }
 
@@ -707,11 +717,55 @@ bool hasSubtree(BiTreeNode *root, BiTreeNode *sub) {
     if (!root) { return false; }
     if (!sub) { return true; }
 
-    if (root->val == sub->val) {
+    bool result = false;
 
+    if (root->val == sub->val) {
+        result = true;
+        if (sub->left) {
+            result &= hasSubtree(root->left, sub->left);
+        }
+        if (sub->right) {
+            result &= hasSubtree(root->right, sub->right);
+        }
+    }
+    if (result) { return true; }
+    if (root->left) {
+        result = hasSubtree(root->left, sub);
     }
 
-    return false;
+    if (result) { return true; }
+    if (root->right) {
+        result = hasSubtree(root->right, sub);
+    }
+    return result;
+}
+
+// 19.二叉树的镜像(递归)
+void mirrorRecursively(BiTreeNode *pRoot) {
+    if (!pRoot) { return; }
+
+    BiTreeNode *node = pRoot->right;
+    pRoot->right = pRoot->left;
+    pRoot->left = node;
+    mirrorRecursively(pRoot->right);
+    mirrorRecursively(pRoot->left);
+}
+
+// 19.二叉树的镜像(非递归)
+void mirror(BiTreeNode *pRoot) {
+    //if (!pRoot) { return; }
+    //stack<BiTreeNode *> nodeStack;
+    //nodeStack.push(pRoot);
+    //while (!nodeStack.empty()) {
+    //    BiTreeNode *root = nodeStack.top();
+    //    nodeStack.pop();
+    //    BiTreeNode *node = root->right;
+    //    root->right = root->left;
+    //    root->left = node;
+
+    //    if(!root->left) { nodeStack.push(root->left); }
+    //    if(!root->right) { nodeStack.push(root->right); }
+    //}
 }
 
 // 32.从1到n整数中1出现的次数
@@ -1259,7 +1313,7 @@ void zhaohang_real_stringConcat() {
     }
 }
 
-// 输入能够两两匹配的n对括号（未ac）
+// 输入能够两两匹配的n对括号(未ac)
 void zhaohang_real_stringMatch() {
     int n;
     cin >> n;
