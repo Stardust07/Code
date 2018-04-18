@@ -8,19 +8,29 @@
 
 using namespace std;
 
+ListNode *constructLinkList() {
+    ListNode *head = new ListNode(1);
+    head->next = new ListNode(2);
+    head->next->next = new ListNode(3);
+    head->next->next->next = new ListNode(4);
+    head->next->next->next->next = new ListNode(5);
+    head->next->next->next->next->next = new ListNode(6);
+    return head;
+}
+
 int main() {
-    vector<int> arr = { 7, 3, 2, 4, 5, 1, 6, 8, 6, 2 };
-    //vector<int> arr = { 16, 7, 3, 20, 17, 8 };
-    //vector<int> arr = { 3, 5, 7, 8, 12, 12, 13, 14 };
+    vector<int> arr = { 16, 7, 3, 20, 17, 8 };
     vector<vector<int>> arrs = { 
         { 1, 2, 3, 4, 5, 6, 7 },
         { 2, 6, 7, 7, 8, 9, 9 },
         { 3, 4, 5, 6, 8, 9, 12 },
         { 8, 8, 8, 9, 9, 9, 12 },
     };
+    ListNode *linkList = constructLinkList();
+
     // »ù´¡ÅÅÐòËã·¨
     //basic_bubbleSort(arr);
-    //basic_selectSort();
+    //basic_selectSort(arr);
     //basic_insertSort(arr);
     //basic_shellSort(arr);
     //basic_quickSort(arr);
@@ -36,12 +46,12 @@ int main() {
     //cout << minNumberInRotateArray({ 2, 3, 4, 1, 2 });
     //cout << fibonacci(4);
     //cout << numberOf1InBinary(1);
-    cout << power(2, 3);
+    //cout << power(2, 3);
     //print1ToMaxOfNDigits(2);
     //deleteNode();
-    //14
-    //15
-    //reverseList();
+    //reorderOddEven(arr);
+    //cout << findKthNodeToTail(linkList, 2)->val;
+    //reverseList(linkList);
     //mergeSortedListRecursively();
     //mergeSortedList();
     //18-31

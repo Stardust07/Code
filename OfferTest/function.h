@@ -12,11 +12,11 @@
 using namespace std;
 
 #pragma region DATA_STRUCTURE
-struct TreeNode {
+struct BiTreeNode {
     int val;
-    TreeNode *left;
-    TreeNode *right;
-    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+    BiTreeNode *left;
+    BiTreeNode *right;
+    BiTreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
 struct ListNode {
@@ -232,13 +232,13 @@ void basic_heapSort(vector<int> &arr) {
 #pragma region BITREE_OPERATION
 // 二叉树
 // 非递归的先序遍历
-vector<int> PreOrder(TreeNode* root) {
+vector<int> PreOrder(BiTreeNode* root) {
     if (root == NULL) return vector<int>();
-    stack<TreeNode*> s;
+    stack<BiTreeNode*> s;
     vector<int> res;
     s.push(root);
     res.push_back(root->val);
-    TreeNode* cur = root->left;
+    BiTreeNode* cur = root->left;
     while (!s.empty() || cur != NULL) {
         while (cur != NULL)//遍历左子节点直到叶子节点  
         {
@@ -253,12 +253,12 @@ vector<int> PreOrder(TreeNode* root) {
 }
 
 // 非递归的中序遍历
-vector<int> InOrder(TreeNode* root) {
+vector<int> InOrder(BiTreeNode* root) {
     if (root == NULL) return vector<int>();
-    stack<TreeNode*> s;
+    stack<BiTreeNode*> s;
     vector<int> res;
     s.push(root);
-    TreeNode* cur = root->left;
+    BiTreeNode* cur = root->left;
     while (!s.empty() || cur != NULL) {
         while (cur != NULL) {
             s.push(cur);
@@ -272,14 +272,14 @@ vector<int> InOrder(TreeNode* root) {
 }
 
 // 非递归的后序遍历
-vector<int> PostOrder(TreeNode* root) {
+vector<int> PostOrder(BiTreeNode* root) {
     if (root == NULL) return vector<int>();
-    stack<TreeNode*> s;
+    stack<BiTreeNode*> s;
     stack<bool> isFirst;//存储是否是第一次被访问  
     vector<int> res;
     s.push(root);
     isFirst.push(true);
-    TreeNode* cur = root->left;
+    BiTreeNode* cur = root->left;
     while (!s.empty() || cur != NULL) {
         while (cur != NULL) {
             s.push(cur);
@@ -353,8 +353,8 @@ vector<int> printListFromTailToHead(ListNode* head) {
 }
 
 // 06.重建二叉树(先序和中序)
-TreeNode* reConstructBinaryTree(vector<int> pre, vector<int> vin) {
-    TreeNode *root = NULL;
+BiTreeNode* reConstructBinaryTree(vector<int> pre, vector<int> vin) {
+    BiTreeNode *root = NULL;
 
     if (pre.size() > 0) {
         vector<int> preLeft;
@@ -375,7 +375,7 @@ TreeNode* reConstructBinaryTree(vector<int> pre, vector<int> vin) {
                 preRight.push_back(pre[i]);
             }
         }
-        root = new TreeNode(pre[0]);
+        root = new BiTreeNode(pre[0]);
         root->left = reConstructBinaryTree(preLeft, vinLeft);
         root->right = reConstructBinaryTree(preRight, vinRight);
     }
@@ -591,6 +591,43 @@ ListNode *deleteNode(ListNode *head, ListNode *toBeDeleted) {
     return head;
 }
 
+// 14.调整数组顺序使奇数位于偶数前面
+void reorderOddEven(vector<int> &arr) {
+    auto swapInArray = [&](int l, int r) {
+        int value = arr[l];
+        arr[l] = arr[r];
+        arr[r] = value;
+    };
+    if (arr.size() <= 1) { return; }
+
+    int head = 0;
+    int tail = arr.size() - 1;
+    while (head < tail) {
+        while ((head < tail) && (arr[head] % 2 != 0)) { ++head; }
+        while ((head < tail) && (arr[tail] % 2 == 0)) { --tail; }
+        swapInArray(head, tail);
+    }
+}
+
+// 15.链表中倒数第k个结点
+ListNode *findKthNodeToTail(ListNode *head, int k) {
+    if ((head == NULL) || (k <= 0)) { return NULL; }
+   
+    ListNode *p = head;
+    for (int i = 1; (i < k) && (p != NULL); ++i, p = p->next) {
+
+    }
+    if (p == NULL) {
+        return NULL;
+    }
+    ListNode *q = head;
+    while (p->next != NULL) {
+        p = p->next;
+        q = q->next;
+    }
+    return q;
+}
+
 // 16.反转链表
 ListNode *reverseList(ListNode *head) {
     ListNode *cur = head;
@@ -663,6 +700,18 @@ ListNode *mergeSortedList(ListNode *pHead1, ListNode *pHead2) {
         curNode->next = p;
     }
     return head;
+}
+
+// 18.树的子结构
+bool hasSubtree(BiTreeNode *root, BiTreeNode *sub) {
+    if (!root) { return false; }
+    if (!sub) { return true; }
+
+    if (root->val == sub->val) {
+
+    }
+
+    return false;
 }
 
 // 32.从1到n整数中1出现的次数
