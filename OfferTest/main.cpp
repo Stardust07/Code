@@ -36,8 +36,8 @@ BiTreeNode *constructBiTree(vector<int> list) {
             p = r->right;
             rightFinished = true;
         } else {
-            r = r->left;
             p = r->left;
+            //p = r->left;
             leftFinished = false;
             rightFinished = false;
         }
@@ -54,18 +54,19 @@ void printBiTree(BiTreeNode *root) {
     nodes.push(root);
     while (!nodes.empty()) {
         BiTreeNode *r = nodes.front();
+        nodes.pop();
+
         if (r) {
             cout << r->val << " ";
+            if (r->left || r->right) {
+                nodes.push(r->left);
+                nodes.push(r->right);
+            }
         } else {
             cout << "#" << " ";
         }
-        nodes.pop();
-        if (r->left || r->right) {
-            nodes.push(r->left);
-            nodes.push(r->right);
-        }
     }
-
+    cout << endl;
 }
 
 ListNode *constructLinkList(vector<int> list) {
@@ -91,15 +92,18 @@ void printLinkList(ListNode *head) {
 
 int main() {
     vector<int> arr = { 16, 7, 3, 20, 17, 8 };
-    vector<vector<int>> arrs = { 
-        { 1, 2, 3, 4, 5, 6, 7 },
-        { 2, 6, 7, 7, 8, 9, 9 },
-        { 3, 4, 5, 6, 8, 9, 12 },
-        { 8, 8, 8, 9, 9, 9, 12 },
+    vector<vector<int>> arrs = {
+        //{ 1, 2, 3, 4, 5, 6, 7 },
+        //{ 2, 6, 7, 7, 8, 9, 9 },
+        //{ 3, 4, 5, 6, 8, 9, 12 },
+        //{ 8, 8, 8, 9, 9, 9, 12 },
+        { 1 },
+        { 2 },
+        { 3 },
+
     };
     ListNode *linkList = constructLinkList({ 1, 2, 3, 4, 5, 6 });
-    BiTreeNode *biTree = constructBiTree({ 8, '#', 10, 5, 7, 9, 11 });
-    printBiTree(biTree);
+    BiTreeNode *biTree = constructBiTree({ 8, 8, 10, 5, 7, 9, 11 });
     // »ù´¡ÅÅÐòËã·¨
     //basic_bubbleSort(arr);
     //basic_selectSort(arr);
@@ -116,7 +120,7 @@ int main() {
     //reConstructBinaryTree();
     //stackToQueue();
     //cout << minNumberInRotateArray({ 2, 3, 4, 1, 2 });
-    //cout << fibonacci(4);
+    //cout << fibonacci(3);
     //cout << numberOf1InBinary(1);
     //cout << power(2, 3);
     //print1ToMaxOfNDigits(2);
@@ -129,8 +133,11 @@ int main() {
     //cout << hasSubtree();
     //mirrorRecursively();
     //mirror(biTree);
-    //20-31
-
+    //printMatrixInCircle(arrs);
+    //21
+    //22
+    printFromTopToBottom(biTree);
+    //24-31
     //cout << numberOf1Between1AndN(1000);
     //cout << numberOfBetween1AndN(1000);
     //33

@@ -450,15 +450,23 @@ int minNumberInRotateArray(vector<int> rotateArray) {
 
 // 09.斐波拉契数列
 int fibonacci(int n) {
+    if (n == 0) {
+        return 0;
+    }
+    if (n == 1) {
+        return 1;
+    }
+
     int pre1, pre2;
     pre1 = 1;
     pre2 = 0;
-    for (int i = 1; i < n; ++i) {
-        int temp = pre1;
-        pre1 += pre2;
-        pre2 = temp;
+    int res;
+    for (int i = 2; i <= n; ++i) {
+        res = pre1 + pre2;
+        pre2 = pre1;
+        pre1 = res;
     }
-    return (pre1 + pre2);
+    return res;
 }
 
 // 变态青蛙跳台阶
@@ -753,19 +761,76 @@ void mirrorRecursively(BiTreeNode *pRoot) {
 
 // 19.二叉树的镜像(非递归)
 void mirror(BiTreeNode *pRoot) {
-    //if (!pRoot) { return; }
-    //stack<BiTreeNode *> nodeStack;
-    //nodeStack.push(pRoot);
-    //while (!nodeStack.empty()) {
-    //    BiTreeNode *root = nodeStack.top();
-    //    nodeStack.pop();
-    //    BiTreeNode *node = root->right;
-    //    root->right = root->left;
-    //    root->left = node;
+    if (!pRoot) { return; }
+    queue<BiTreeNode *> nodeStack;
+    nodeStack.push(pRoot);
+    while (!nodeStack.empty()) {
+        BiTreeNode *root = nodeStack.front();
+        nodeStack.pop();
+        BiTreeNode *node = root->right;
+        root->right = root->left;
+        root->left = node;
 
-    //    if(!root->left) { nodeStack.push(root->left); }
-    //    if(!root->right) { nodeStack.push(root->right); }
-    //}
+        if(root->left) { nodeStack.push(root->left); }
+        if(root->right) { nodeStack.push(root->right); }
+    }
+}
+
+// 20.顺时针打印矩阵
+void printMatrixInCircle(vector<vector<int>> matrix) {
+    int rowsStart = 0;
+    int columnsStart = 0;
+    int rowsEnd = matrix.size() - 1;
+    int columnsEnd = matrix[0].size() - 1;
+
+    while (rowsStart <= rowsEnd && columnsStart <= columnsEnd) {
+        int i = rowsStart, j = columnsStart;
+        while (j <= columnsEnd) {
+            cout << matrix[i][j++] << " ";
+        }
+        --j;
+        ++i;
+        while (i <= rowsEnd) {
+            cout << matrix[i++][j] << " ";
+        }
+        --i;
+        --j;
+        while (i > rowsStart && j >= columnsStart) {
+            cout << matrix[i][j--] << " ";
+        }
+        ++j;
+        --i;
+        while (j < columnsEnd && i > rowsStart) {
+            cout << matrix[i--][j] << " ";
+        }
+
+        ++rowsStart;
+        ++columnsStart;
+        --rowsEnd;
+        --columnsEnd;
+    }
+}
+
+// 22.栈的压入、弹出序列
+bool isPopOrder(vector<int> pushOrder, vector<int> popOrder) {
+
+}
+
+// 23.从上往下打印二叉树
+void printFromTopToBottom(BiTreeNode *root) {
+    if (!root) { return; }
+
+    queue<BiTreeNode *> nodes;
+    nodes.push(root);
+    while (!nodes.empty()) {
+        BiTreeNode *r = nodes.front();
+        nodes.pop();
+
+        cout << r->val << " ";
+        if (r->left) { nodes.push(r->left); }
+        if (r->right) { nodes.push(r->right); }
+    }
+    cout << endl;
 }
 
 // 32.从1到n整数中1出现的次数
