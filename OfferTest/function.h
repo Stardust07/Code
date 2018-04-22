@@ -813,7 +813,25 @@ void printMatrixInCircle(vector<vector<int>> matrix) {
 
 // 22.栈的压入、弹出序列
 bool isPopOrder(vector<int> pushOrder, vector<int> popOrder) {
+    if (pushOrder.size() != popOrder.size()) { return false; }
 
+    stack<int> dataStack;
+    auto iPop = popOrder.begin();
+    auto iPush = pushOrder.begin();
+    if (pushOrder.size() > 0) {
+        while (iPop != popOrder.end()) {
+            while (dataStack.empty() || dataStack.top() != *iPop) {
+                if (iPush == pushOrder.end()) { return false; }
+                dataStack.push(*iPush);
+                ++iPush;
+            }
+            dataStack.pop();
+            ++iPop;
+        }
+
+        return true;
+    }
+    return false;
 }
 
 // 23.从上往下打印二叉树
@@ -831,6 +849,28 @@ void printFromTopToBottom(BiTreeNode *root) {
         if (r->right) { nodes.push(r->right); }
     }
     cout << endl;
+}
+
+// 24.二叉搜索树的后序遍历序列
+bool verifySequenceOfBST(vector<int> sequence, int s, int t) {
+    if (t - s < 0) { return false; }
+    if (t - s == 0) { return true; }
+
+    int root = sequence[t];
+    int p = s;
+    for (; sequence[p] < root; ++p) {}
+    for (int i = p; i < t; ++i) {
+        if (sequence[i] < root) { return false; }
+    }
+
+    bool res = true;
+    if (s <= p - 1) {
+        res &= verifySequenceOfBST(sequence, s, p - 1);
+    }
+    if (p <= t - 1) {
+        res &= verifySequenceOfBST(sequence, p, t - 1);
+    }
+    return  res;
 }
 
 // 32.从1到n整数中1出现的次数
@@ -1155,6 +1195,49 @@ void meituan_real_minWeightedAssign() {
     //}
 
     cout << costX(vital, minCost);
+}
+
+int getCount(int n) {
+    const int BASE = 10;
+    int countOfN = 1;
+    if (n < 10) { return n; }
+    int temp = n;
+    
+    while (temp / BASE != 0) {
+        ++countOfN;
+        temp /= BASE;
+    }
+
+    long long res = countOfN * (n - pow(BASE, countOfN - 1) + 1);
+    for (int i = countOfN - 1; i > 0; --i) {
+        res += i * 9 * pow(BASE, i - 1);
+    }
+    return res;
+}
+
+//统计位数
+void meituan_real_count() {
+    int t;
+    cin >> t;
+    vector<int> nums(t);
+    for (int i = 0; i < t; ++i) {
+        cin >> nums[i];
+    }
+    for (int i = 0; i < t; ++i) {
+        cout << getCount(nums[i])<<endl;
+    }
+}
+
+void meituan_real_friendsLearning() {
+    //int n, m;
+    //cin >> n >> m;
+    //vector<int> nums(t);
+    //for (int i = 0; i < m; ++i) {
+    //    cin >> nums[i];
+    //}
+    //for (int i = 0; i < t; ++i) {
+    //    cout << getCount(nums[i]) << endl;
+    //}
 }
 #pragma endregion MEITUAN_REAL
 

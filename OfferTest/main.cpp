@@ -135,9 +135,10 @@ int main() {
     //mirror(biTree);
     //printMatrixInCircle(arrs);
     //21
-    //22
-    printFromTopToBottom(biTree);
-    //24-31
+    //cout << isPopOrder({ 1, 2, 3, 4, 5 }, { 4, 3, 5, 1, 2 });
+    //printFromTopToBottom(biTree);
+    cout << verifySequenceOfBST({ 4, 6, 7, 5 }, 0, 3);
+    //25-31
     //cout << numberOf1Between1AndN(1000);
     //cout << numberOfBetween1AndN(1000);
     //33
@@ -153,6 +154,7 @@ int main() {
     //meituan_test_maxArea();
     //meituan_real_minWeightedAssign();
     //meituan_online_findPatitionIndex();
+    //meituan_real_count();
 
     // Эјвз
     //wangyi_test_placeBrick();
