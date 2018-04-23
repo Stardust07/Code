@@ -8,7 +8,9 @@
 
 using namespace std;
 
+void printVector()
 BiTreeNode *constructBiTree(vector<int> list) {
+    // has problem
     if (list.size() <= 0) { return NULL; }
 
     BiTreeNode *root = new BiTreeNode(list[0]);
@@ -103,7 +105,8 @@ int main() {
 
     };
     ListNode *linkList = constructLinkList({ 1, 2, 3, 4, 5, 6 });
-    BiTreeNode *biTree = constructBiTree({ 8, 8, 10, 5, 7, 9, 11 });
+    //BiTreeNode *biTree = constructBiTree({ 8, 8, 10, 5, 7, 9, 11 });
+    BiTreeNode *biTree = constructBiTree({ 8, 8, 10, 5, 7, 9, 11, '#', 1 });
     // »ù´¡ÅÅÐòËã·¨
     //basic_bubbleSort(arr);
     //basic_selectSort(arr);
@@ -137,7 +140,7 @@ int main() {
     //21
     //cout << isPopOrder({ 1, 2, 3, 4, 5 }, { 4, 3, 5, 1, 2 });
     //printFromTopToBottom(biTree);
-    cout << verifySequenceOfBST({ 4, 6, 7, 5 }, 0, 3);
+    //cout << verifySequenceOfBST({ 4, 6, 7, 5 }, 0, 3);
     //25-31
     //cout << numberOf1Between1AndN(1000);
     //cout << numberOfBetween1AndN(1000);
@@ -178,5 +181,10 @@ int main() {
     //tencent_real_songList();
     //tencent_real_assignMachine();
     //getInfinityDomain();
+
+    //PreOrder(biTree);
+    //PreOrder2(biTree);
+    //InOrder(biTree);
+    //PostOrder(biTree);
     return 0;
 }

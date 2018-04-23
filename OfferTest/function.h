@@ -239,19 +239,40 @@ vector<int> PreOrder(BiTreeNode* root) {
     vector<int> res;
     s.push(root);
     res.push_back(root->val);
+    cout << root->val << " ";
     BiTreeNode* cur = root->left;
     while (!s.empty() || cur != NULL) {
         while (cur != NULL)//遍历左子节点直到叶子节点  
         {
             s.push(cur);
             res.push_back(cur->val);
+            cout << cur->val << " ";
             cur = cur->left;
         }
         cur = s.top()->right;//将当前节点设为最近右子节点  
         s.pop();
     }
+    cout << endl;
     return res;
 }
+
+vector<int> PreOrder2(BiTreeNode* root) {
+    if (root == NULL) return vector<int>();
+    stack<BiTreeNode*> s;
+    vector<int> res;
+    s.push(root);
+    while (!s.empty()) {
+        BiTreeNode* cur = s.top();
+        res.push_back(cur->val);
+        cout << cur->val << " ";
+        s.pop();
+        if (cur->right) { s.push(cur->right); }
+        if (cur->left) { s.push(cur->left); }
+    }
+    cout << endl;
+    return res;
+}
+
 
 // 非递归的中序遍历
 vector<int> InOrder(BiTreeNode* root) {
