@@ -8,7 +8,15 @@
 
 using namespace std;
 
-void printVector()
+template<class T>
+void printVector(vector<T> v) {
+    auto i = v.begin();
+    for (; i != v.end() - 1; ++i) {
+        cout << *i << " ";
+    }
+    cout << *i << endl;
+}
+
 BiTreeNode *constructBiTree(vector<int> list) {
     // has problem
     if (list.size() <= 0) { return NULL; }
@@ -106,7 +114,12 @@ int main() {
     };
     ListNode *linkList = constructLinkList({ 1, 2, 3, 4, 5, 6 });
     //BiTreeNode *biTree = constructBiTree({ 8, 8, 10, 5, 7, 9, 11 });
-    BiTreeNode *biTree = constructBiTree({ 8, 8, 10, 5, 7, 9, 11, '#', 1 });
+    //BiTreeNode *biTree = constructBiTree({ 8, 8, 10, 5, 7, 9, 11, '#', 1 });
+    BiTreeNode *biTree = new BiTreeNode(1);
+    biTree->left = new BiTreeNode(2);
+    biTree->left->left = new BiTreeNode(3);
+    biTree->left->right = new BiTreeNode(3);
+    //biTree->right = new BiTreeNode(2);
     // »ù´¡ÅÅÐòËã·¨
     //basic_bubbleSort(arr);
     //basic_selectSort(arr);
@@ -115,6 +128,12 @@ int main() {
     //basic_quickSort(arr);
     //basic_mergeSort(arr);
     //basic_heapSort(arr);
+
+    // ¶þ²æÊ÷
+    //PreOrder(biTree);
+    //PreOrder2(biTree);
+    //InOrder(biTree);
+    //PostOrder(biTree);
 
 
     //cout << findInPartiallySortedMatrix(4, arrs);
@@ -141,12 +160,17 @@ int main() {
     //cout << isPopOrder({ 1, 2, 3, 4, 5 }, { 4, 3, 5, 1, 2 });
     //printFromTopToBottom(biTree);
     //cout << verifySequenceOfBST({ 4, 6, 7, 5 }, 0, 3);
-    //25-31
+    //printVector(findPathInBitree(biTree, 6));
+    //26-31
     //cout << numberOf1Between1AndN(1000);
     //cout << numberOfBetween1AndN(1000);
     //33
     //cout << getUglyNumber(11);
-    //35-67
+    //35-44
+    josephCircle(10, 2);
+    //46
+    cout << specialAdd(2, 4);
+    //48-67
 
     //cout << jumpFloorII(3);
     //cout << rectCover(3);
@@ -182,9 +206,5 @@ int main() {
     //tencent_real_assignMachine();
     //getInfinityDomain();
 
-    //PreOrder(biTree);
-    //PreOrder2(biTree);
-    //InOrder(biTree);
-    //PostOrder(biTree);
     return 0;
 }

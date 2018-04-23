@@ -894,6 +894,64 @@ bool verifySequenceOfBST(vector<int> sequence, int s, int t) {
     return  res;
 }
 
+// 25.二叉树中和为某一值的路径(递归)
+vector<vector<int>> findPathInBitree(BiTreeNode *root, int expectedSum) {
+    if (!root || (root->val > expectedSum)) { return vector<vector<int>>(); }
+    
+    vector<vector<int>> pathSet;
+
+    if (root->val == expectedSum && !root->left && !root->right) {
+        return vector<vector<int>>(1, vector<int>(1, root->val));
+    }
+    if (root->left) {
+        vector<vector<int>> left = findPathInBitree(root->left, expectedSum - root->val);
+        for (auto i = left.begin(); i != left.end(); ++i) {
+            vector<int> path;
+            path.push_back(root->val);
+            for (auto j = i->begin(); j != i->end(); ++j) {
+                path.push_back(*j);
+            }
+            pathSet.push_back(path);
+        }
+
+    }
+    if (root->right) {
+        vector<vector<int>> right = findPathInBitree(root->right, expectedSum - root->val);
+        for (auto i = right.begin(); i != right.end(); ++i) {
+            vector<int> path;
+            path.push_back(root->val);
+            for (auto j = i->begin(); j != i->end(); ++j) {
+                path.push_back(*j);
+            }
+            pathSet.push_back(path);
+        }
+    }
+    //stack<BiTreeNode *> s;
+    //int curSum = 0;
+    //BiTreeNode *cur = root;
+    ////path.push_back(cur->val);
+    //while (!s.empty() || cur) {
+    //    while (cur) {
+    //        s.push(cur);
+    //        path.push_back(cur->val);
+    //        curSum += cur->val;
+    //        cur = cur->left;
+    //    }
+    //    if (!s.top()->right && !s.top()->left) {
+    //        if (curSum == expectedSum) {
+    //            pathSet.push_back(path);
+    //        }
+    //        curSum -= s.top()->val;
+    //        s.pop();
+    //        path.pop_back();
+    //    }
+    //    cur = s.top()->right;
+    //    s.pop();
+    //}
+
+    return pathSet;
+}
+
 // 32.从1到n整数中1出现的次数
 int numberOf1Between1AndN(unsigned int n) {
 
@@ -947,6 +1005,33 @@ int getUglyNumber(int index) {
     }
 
     return uglyNumbers[index - 1];
+}
+
+// 45.圆圈中最后剩下的数字
+int josephCircle(int n, int q) {
+    if (n < 1 || q < 1) { return -1; }
+    int res = 0;
+    for (int i = 2; i <= n; ++i) {
+        res = (res + q) % i;
+    }
+    return res;
+}
+
+// 47.不用加减乘除的加法
+int specialAdd(int x, int y) {
+    int sum;
+    int carry;
+
+    do {
+        sum = x ^ y;
+        carry = (x & y) << 1;
+
+        x = sum;
+        y = carry;
+
+    } while (y != 0);
+
+    return x;
 }
 
 // 矩形覆盖
